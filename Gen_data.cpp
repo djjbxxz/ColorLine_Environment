@@ -1,70 +1,126 @@
-#include "head.h"
-#include <algorithm>
-#ifdef DEBUG
-#include <assert.h>
-#endif // DEBUG
-void Gen_data::random_lay_chess(game_map map, char lay_num)
+#include "gen_data.h"
+#include "Pathfinding.h"
+#include <iostream>
+using Pathfinding::A_star;
+using myfunc::exclude;
+Direction Gen_data::choos_a_direction(const Point& point)
 {
-	//auto index = random->rand_choice(map.empty.size());
+	std::vector<Direction> legal_direction;
+	for (const auto& _direct : Direction::eight_direction)
+		if (!_direct.walk(point, lined_num - 1).outofrange())
+			legal_direction.push_back(_direct);
+	return Random::rand_choice(legal_direction);
 }
 
-void game_map::lay_chess(const Point& point,color _color)
+std::vector<Point> Gen_data::get_destination(Lined_chess& lined)
 {
-#ifdef DEBUG
-	assert(inspect(point) == empty);
-#endif // DEBUG
-	data[point.index()] = _color;
-	erase_from_empty(point);
+	std::vector<Point>destinations;
+	for (auto& point : lined.possible_destinations)
+		if (!point.outofrange())
+			destinations.emplace_back(point);
+	return destinations;
 }
 
-void game_map::lay_chess(int index, color _color)
+Lined_chess Gen_data::get_lined_chess(Board_pattern& pattern)
 {
-	lay_chess(_empty[index], _color);
-}
-
-color game_map::inspect(int index) const
-{
-	return color(data[index]);
-}
-
-color game_map::inspect(const Point& point) const
-{
-	return color(data[point.index()]);
-}
-
-void game_map::erase_from_empty(const Point& point)
-{
-	for (auto i = _empty.begin(); i != _empty.end(); i++)
+	Lined_chess lined_chess;
+	Point point;
+	do
 	{
-		if (point == *i)
-		{
-			_empty.erase(i);
-			break;
-		}
-#ifdef DEBUG
-		assert(i < _empty.end());
+		//随机取点
+		point = game_map->pick_a_spot();
+
+		//计算合法终点
+		lined_chess = Lined_chess(game_map, point, choos_a_direction(point), lined_num);
+	} while (lined_chess.possible_destinations.empty());
+	return lined_chess;
+}
+
+void Gen_data::fill_empty()
+{
+	std::vector<Point>exclusion;
+	exclusion.insert(exclusion.end(), pattern->lined.begin(), pattern->lined.end());
+	exclusion.insert(exclusion.end(), pattern->path.begin(), pattern->path.end());
+	int num_to_fill = BOARD_SIZE * BOARD_SIZE * fill_ratio - pattern->lined.size() - 1;
+	if (!pattern->another_destination.outofrange()&&!myfunc::is_inlist(pattern->another_destination,pattern->path))
+		exclusion.push_back(pattern->another_destination);
+#ifdef _DEBUG
+	assert(myfunc::is_unique(exclusion));
+#endif // _DEBUG
+
+	auto _empty = exclude(game_map->_empty, exclusion);
+	for (size_t i = 0; i < num_to_fill; i++)
+	{
+		auto index = Random::randint(_empty.size());
+		pattern->other.push_back(*_empty[index]);
+		_empty.erase(_empty.begin() + index);
+		//game_map->_empty.erase(empty.begin()+index);
+	}
+
+}
+
+
+Gen_data::Return_message Gen_data::go()
+{
+	auto lined = get_lined_chess(*pattern);
+	pattern->set(lined);
+	auto path = A_star(lined).get_path();
+	pattern->set_path(path);
+	fill_empty();
+	paint();
+	return{ game_map,pattern };
+}
+
+void Gen_data::paint()
+{
+	auto color = Color::rand_color();
+	game_map->set(pattern->startpoint, color);
+	game_map->set(pattern->lined, color);
+	if (!pattern->another_destination.outofrange())
+		game_map->set(pattern->another_destination, Color::rand_statu_except(color));
+	for (const auto& point : pattern->other)
+		game_map->set(point, Color::rand_color());
+}
+
+#ifdef _DEBUG
+void Gen_data::print()
+{
+	pattern->print();
+	game_map->print();
+}
+#endif // DEBUGvoid Gen_data::print()
+
+void Board_pattern::set(Lined_chess& _lined)
+{
+	destination = _lined.destination;
+	startpoint = _lined.startpoint;
+	lined = _lined.points;
+	if (_lined.possible_destinations.size() == 2)
+		for (const auto& point : _lined.possible_destinations)
+			if (point != destination)
+				another_destination = point;
+}
+
+void Board_pattern::set_path(const std::vector<Point>& _path)
+{
+	path = _path;
+}
+#ifdef _DEBUG
+void Board_pattern::print()
+{
+	using std::cout;
+	using std::cin;
+	using std::endl;
+	cout << "startpoint: ";
+	startpoint.print();
+	cout << endl << "path: ";
+	for (const auto& point : path)
+		point.print();
+	cout << endl << "endpoint: ";
+	destination.print();
+	cout << endl << "lined: ";
+	for (const auto& point : lined)
+		point.print();
+	cout << endl;
+}
 #endif // DEBUG
-
-	}
-}
-
-void game_map::erase_from_empty(int index)
-{
-	_empty.erase(_empty.begin()+index);
-	auto point = Point{ index };
-	erase_from_empty(point);
-}
-
-void game_map::print()
-{
-	for (size_t i = 0; i < data.size(); i++)
-	{
-		if (i / BOARD_SIZE > 0)
-			std::cout << std::endl;
-		std::cout << int(data[i]);
-	}
-	for (const auto& point : data)
-	{
-		std::cout << int(point);
-	}
-}

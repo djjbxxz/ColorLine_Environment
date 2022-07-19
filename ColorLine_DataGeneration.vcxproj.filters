@@ -18,16 +18,37 @@
     <ClCompile Include="ColorLine_DataGeneration.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Gen_data.cpp">
+    <ClCompile Include="game_map.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Pathfinding.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Base.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="gen_data.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="my_func.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="head.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Export.cpp">
       <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Pathfinding.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Base.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="gen_data.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="my_func.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

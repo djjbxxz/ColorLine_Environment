@@ -1,7 +1,6 @@
 ﻿#include <iostream>
-#include "head.h"
+#include "gen_data.h"
 
-Random random_generator = Random();
 //void init(void)
 //{
 //	srand(time(NULL));
@@ -9,15 +8,29 @@ Random random_generator = Random();
 //}
 int main()
 {
-    #ifdef DEBUG
+#ifdef _DEBUG
 	std::cout << "DEBUG\n";
 #else
 	std::cout << "No DEBUG\n";
 #endif
 
-	auto a = game_map(0.5);
-	a.print();
 
 
+#ifdef _DEBUG
+	auto result = Gen_data(4, 0.6).go();
+	result.print();
+
+	//int times = 3000;
+
+	//for (int i = 0; i < times; i++)
+	//	Gen_data(4, 0.6).go();
+#else
+	int times = 1000000;
+
+	for (int i=0;i<times;i++)
+		Gen_data(4, 0.6).go();
+#endif
+	//a.print();
 
 }
+
