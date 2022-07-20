@@ -37,7 +37,7 @@ const Color& Game_map::get(const Point& point) const
 {//get data in 2D index
 	return (*this)[point.x * BOARD_SIZE + point.y];
 }
-#ifdef _DEBUG
+#ifdef _PRINT
 
 void Game_map::print()
 {

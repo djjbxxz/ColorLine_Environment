@@ -38,7 +38,9 @@ public:
 	{
 		return this->value == a.value;
 	}
+#ifdef _PRINT
 	int print() { return (int)value; };
+#endif // DEBUG
 };
 
 
@@ -99,7 +101,7 @@ public:
 	{
 		return std::sqrt(std::pow((point.x - x), 2) + std::pow((point.y - y), 2));
 	}
-#ifdef _DEBUG
+#ifdef _PRINT
 	void print()const { printf("(%d,%d)", (int)x, (int)y); };
 #endif // DEBUG
 
@@ -160,7 +162,7 @@ private:
 	static std::vector<Point> _empty_init();
 private:
 	std::vector<Color> data;
-#ifdef _DEBUG
+#ifdef _PRINT
 public:
 	void print();
 #endif // _DEBUG

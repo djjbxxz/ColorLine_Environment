@@ -41,7 +41,7 @@ void Gen_data::fill_empty()
 	std::vector<Point>exclusion;
 	exclusion.insert(exclusion.end(), pattern->lined.begin(), pattern->lined.end());
 	exclusion.insert(exclusion.end(), pattern->path.begin(), pattern->path.end());
-	int num_to_fill = BOARD_SIZE * BOARD_SIZE * fill_ratio - pattern->lined.size() - 1;
+	int num_to_fill = BOARD_SIZE * BOARD_SIZE * fill_ratio - lined_num - 1;
 	if (!pattern->another_destination.outofrange()&&!myfunc::is_inlist(pattern->another_destination,pattern->path))
 		exclusion.push_back(pattern->another_destination);
 #ifdef _DEBUG
@@ -49,6 +49,7 @@ void Gen_data::fill_empty()
 #endif // _DEBUG
 
 	auto _empty = exclude(game_map->_empty, exclusion);
+	num_to_fill = num_to_fill > _empty.size() ? _empty.size() : num_to_fill;
 	for (size_t i = 0; i < num_to_fill; i++)
 	{
 		auto index = Random::randint(_empty.size());
@@ -82,7 +83,7 @@ void Gen_data::paint()
 		game_map->set(point, Color::rand_color());
 }
 
-#ifdef _DEBUG
+#ifdef _print
 void Gen_data::print()
 {
 	pattern->print();
@@ -105,7 +106,7 @@ void Board_pattern::set_path(const std::vector<Point>& _path)
 {
 	path = _path;
 }
-#ifdef _DEBUG
+#ifdef _PRINT
 void Board_pattern::print()
 {
 	using std::cout;
