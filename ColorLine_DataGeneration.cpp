@@ -1,4 +1,7 @@
-﻿
+﻿#ifndef _EXPORT
+
+
+
 #include <iostream>
 #include "gen_data.h"
 #include "Export.h"
@@ -28,7 +31,7 @@ int main()
 	//	Gen_data(4, 0.6).go();
 #else
 
-	int times = 1000000;
+	int times = 10000;
 
 	//for (int i=0;i<times;i++)
 	//	Gen_data(lined_num, fill_ratio).go();
@@ -45,4 +48,5 @@ int main()
 	//a.print();
 
 }
+#endif
 

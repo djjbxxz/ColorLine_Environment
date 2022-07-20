@@ -1,10 +1,5 @@
-//#ifdef _DEBUG
-//
-//#else
-#include <pybind11\pybind11.h>
 #include "gen_data.h"
-namespace py = pybind11;
-
+#include <iostream>
 
 #include "threadpool.h"
 
@@ -18,13 +13,15 @@ void func(int lined_num, float fill_ratio, Game_map* game_map, Board_pattern* ex
 			extra_info + i).go();
 }
 
-void generate_data
-(int lined_num, float fill_ratio, Game_map* game_map, Board_pattern* extra_info, int num)
+Game_map* generate_data
+(int num,int lined_num=4, float fill_ratio=0.5 )
 {
+	Game_map* game_map = new Game_map[num];
+	Board_pattern* extra_info = new Board_pattern[num];
 	if (num % THREAD_MAX_NUM != 0)
 	{
 		std::cout << "number of generated data should be divisible by Thread num" << std::endl;
-		return;
+		return nullptr;
 	}
 	int taskperthread = num / THREAD_MAX_NUM;
 	std::vector< std::future<void> > results;
@@ -39,15 +36,13 @@ void generate_data
 				taskperthread));
 	for (auto&& task : results)
 		task.get();
+	extra_info->print();
+	game_map->print();
+	
+	return game_map;
 }
 
-
-//PYBIND11_MODULE(example1, m)
-//{
-//	m.doc() = "The general function";
-//	m.def("age", &age);
-//	m.def("Name", &Name);
-//}
-
-//#endif
-
+class Data_controller
+{
+	//TODO:数据类型转换到Python的格式
+};

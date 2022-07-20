@@ -11,6 +11,8 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		export_pybind|x64 = export_pybind|x64
+		export_pybind|x86 = export_pybind|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
@@ -19,6 +21,10 @@ Global
 		{C29E2197-68DB-41F4-8191-BD5EA071D558}.Debug|x64.Build.0 = Debug|x64
 		{C29E2197-68DB-41F4-8191-BD5EA071D558}.Debug|x86.ActiveCfg = Debug|Win32
 		{C29E2197-68DB-41F4-8191-BD5EA071D558}.Debug|x86.Build.0 = Debug|Win32
+		{C29E2197-68DB-41F4-8191-BD5EA071D558}.export_pybind|x64.ActiveCfg = export_pybind|x64
+		{C29E2197-68DB-41F4-8191-BD5EA071D558}.export_pybind|x64.Build.0 = export_pybind|x64
+		{C29E2197-68DB-41F4-8191-BD5EA071D558}.export_pybind|x86.ActiveCfg = export_pybind|Win32
+		{C29E2197-68DB-41F4-8191-BD5EA071D558}.export_pybind|x86.Build.0 = export_pybind|Win32
 		{C29E2197-68DB-41F4-8191-BD5EA071D558}.Release|x64.ActiveCfg = Release|x64
 		{C29E2197-68DB-41F4-8191-BD5EA071D558}.Release|x64.Build.0 = Release|x64
 		{C29E2197-68DB-41F4-8191-BD5EA071D558}.Release|x86.ActiveCfg = Release|Win32
@@ -27,6 +33,10 @@ Global
 		{BE8996FC-E8F8-4C21-AD17-8AFAAB61B593}.Debug|x64.Build.0 = Debug|x64
 		{BE8996FC-E8F8-4C21-AD17-8AFAAB61B593}.Debug|x86.ActiveCfg = Debug|Win32
 		{BE8996FC-E8F8-4C21-AD17-8AFAAB61B593}.Debug|x86.Build.0 = Debug|Win32
+		{BE8996FC-E8F8-4C21-AD17-8AFAAB61B593}.export_pybind|x64.ActiveCfg = export_pybind|x64
+		{BE8996FC-E8F8-4C21-AD17-8AFAAB61B593}.export_pybind|x64.Build.0 = export_pybind|x64
+		{BE8996FC-E8F8-4C21-AD17-8AFAAB61B593}.export_pybind|x86.ActiveCfg = export_pybind|Win32
+		{BE8996FC-E8F8-4C21-AD17-8AFAAB61B593}.export_pybind|x86.Build.0 = export_pybind|Win32
 		{BE8996FC-E8F8-4C21-AD17-8AFAAB61B593}.Release|x64.ActiveCfg = Release|x64
 		{BE8996FC-E8F8-4C21-AD17-8AFAAB61B593}.Release|x64.Build.0 = Release|x64
 		{BE8996FC-E8F8-4C21-AD17-8AFAAB61B593}.Release|x86.ActiveCfg = Release|Win32
