@@ -8,6 +8,7 @@
 #include <assert.h>
 #endif // DEBUG
 
+#define FOR_RANGE(PLACEHOLDER,NUM) for(int PLACEHOLDER=0;PLACEHOLDER<NUM;PLACEHOLDER++)
 
 namespace myfunc
 {
@@ -90,6 +91,55 @@ namespace myfunc
 		return false;
 	}
 
+	template <typename T>
+	bool operator==(const std::vector<T>& a, const std::vector<T>& b)
+	{
+		if (a.size() != b.size())
+			return false;
+		std::vector<typename std::vector<T>::const_iterator> ptr_a;
+		std::vector<typename std::vector<T>::const_iterator> ptr_b;
+		ptr_a.reserve(a.size());
+		ptr_b.reserve(b.size());
+		for (auto i = a.begin(); i != a.end(); i++)
+			ptr_a.emplace_back(i);
+		for (auto i = b.begin(); i != b.end(); i++)
+			ptr_b.emplace_back(i);
+		for (auto i = ptr_a.begin(); i != ptr_a.end();)
+		{
+			if (my_remove(*i, ptr_b,
+				[](const typename std::vector<T>::const_iterator& a, typename std::vector<T>::const_iterator& b)
+				->bool {return *a == *b; }))
+				i = ptr_a.erase(i);
+			else
+				return false;
+		}
+		return ptr_a.empty() && ptr_b.empty();
+	}
+
+	//remove only once if repeat
+	template <typename T, typename FUNC>
+	bool my_remove(const T& item, std::vector<T>& list, FUNC condition)
+	{
+		for (auto i = list.begin(); i != list.end();)
+			if (condition(item, *i))
+			{
+				list.erase(i);
+				return true;
+			}
+			else
+				i++;
+		return false;
+	}
+
+	//return first element found that meet the condition
+	template <typename T, typename FUNC>
+	T& find_first(std::vector<T>list,FUNC condition)
+	{
+		for (auto && item:list)
+			if (condition(item))
+				return item;
+	}
+
 	class Random;
 };
 
@@ -134,4 +184,3 @@ private:
 	static std::mt19937 mt;
 	static std::uniform_int_distribution<int> _random;
 };
-

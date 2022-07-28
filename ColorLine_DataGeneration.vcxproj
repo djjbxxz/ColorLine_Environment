@@ -189,7 +189,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;_PRINT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -224,14 +224,18 @@
     <ClCompile Include="ColorLine_DataGeneration.cpp" />
     <ClCompile Include="Export.cpp" />
     <ClCompile Include="game_map.cpp" />
+    <ClCompile Include="Game_rule.cpp" />
     <ClCompile Include="gen_data.cpp" />
+    <ClCompile Include="legel_mask.cpp" />
     <ClCompile Include="my_func.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base.h" />
     <ClInclude Include="Export.h" />
+    <ClInclude Include="Game_rule.h" />
     <ClInclude Include="gen_data.h" />
+    <ClInclude Include="legel_mask.h" />
     <ClInclude Include="my_func.h" />
     <ClInclude Include="Pathfinding.h" />
     <ClInclude Include="threadpool.h" />

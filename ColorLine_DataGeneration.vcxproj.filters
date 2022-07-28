@@ -36,6 +36,12 @@
     <ClCompile Include="Export.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Game_rule.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="legel_mask.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pathfinding.h">
@@ -54,6 +60,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Export.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Game_rule.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="legel_mask.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

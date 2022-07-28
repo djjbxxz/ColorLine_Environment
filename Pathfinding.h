@@ -19,7 +19,7 @@ namespace Pathfinding
 
 class Pathfinding::A_star
 {
-	enum class GRID_STATU:char
+	enum class GRID_STATU :char
 	{
 		NERVER_VISIT,
 		WALL,
@@ -30,7 +30,7 @@ class Pathfinding::A_star
 public:
 	class Path_tree_Node;
 public:
-	A_star(const Lined_chess& lined_chess):startpoint(lined_chess.startpoint),endpoint(lined_chess.destination)
+	A_star(const Lined_chess& lined_chess) :startpoint(lined_chess.startpoint), endpoint(lined_chess.destination)
 	{
 		for (const auto& point : lined_chess.points)
 			set_game_map(point, GRID_STATU::WALL);
@@ -42,11 +42,11 @@ private:
 	std::vector<Point> get_reachable(const Point& point)const;
 	GRID_STATU get_game_map(const Point& point)const;
 	void set_game_map(const Point& point, GRID_STATU);
-	Path_tree_Node* add_to_openlist(Point &point, Point &endpoint, Path_tree_Node* _last =nullptr);
+	Path_tree_Node* add_to_openlist(Point& point, Point& endpoint, Path_tree_Node* _last = nullptr);
 private:
 	Point startpoint;
 	Point endpoint;
-	GRID_STATU game_map[BOARD_SIZE][BOARD_SIZE]{GRID_STATU::NERVER_VISIT};
+	GRID_STATU game_map[BOARD_SIZE][BOARD_SIZE]{ GRID_STATU::NERVER_VISIT };
 	std::vector<Path_tree_Node*> openlist;
 	std::vector<Path_tree_Node> all_points;
 };
@@ -66,7 +66,7 @@ public:
 	}
 
 	float f()const { return g + h; }
-	bool update(const Path_tree_Node& parent) 
+	bool update(const Path_tree_Node& parent)
 	{
 		auto new_g = parent.g + 1;
 		if (new_g < g)

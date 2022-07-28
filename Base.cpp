@@ -13,7 +13,7 @@ const std::map < Direction::_direction, Point > Direction::direct2point = std::m
 	   {_direction::northwest,{ -1,-1 }}
 };
 
-const std::vector<Direction> Direction::eight_direction = std::vector<Direction>{
+const std::vector<Direction> Direction::eight_neighbor = std::vector<Direction>{
 	{_direction::north},
 	{_direction::northeast},
 	{_direction::east},
@@ -24,11 +24,18 @@ const std::vector<Direction> Direction::eight_direction = std::vector<Direction>
 	{_direction::northwest}
 };
 
-const std::vector<Direction> Direction::four_direction = std::vector<Direction>{
+const std::vector<Direction> Direction::four_neighbor = std::vector<Direction>{
 	{_direction::north},
 	{_direction::east},
 	{_direction::south},
 	{_direction::west}
+};
+
+const std::vector<Direction> Direction::scan_direction = std::vector<Direction>{
+	{_direction::north},
+	{_direction::northeast},
+	{_direction::east},
+	{_direction::southeast}
 };
 
 Color Color::rand_color_except(std::vector<Color>& exclusion)
@@ -88,10 +95,9 @@ std::vector<Point> Game_map::_empty_init()
 {
 	std::vector<Point>__empty;
 	__empty.reserve(BOARD_SIZE * BOARD_SIZE);
-	for (int i=0;i<BOARD_SIZE*BOARD_SIZE;i++)
+	for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; i++)
 		__empty.emplace_back(i);
 	return __empty;
 }
 //const std::vector<Point> Game_map::_empty = std::vector<Point>{ };
 const std::vector<Point> Game_map::_empty = Game_map::_empty_init();
-

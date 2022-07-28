@@ -54,7 +54,7 @@ A_star::Path_tree_Node* A_star::get_point_from_openlist()
 std::vector<Point> A_star::get_reachable(const Point& point) const
 {
 	std::vector<Point>temp;
-	for (const auto& each_direction : Direction::four_direction)
+	for (const auto& each_direction : Direction::four_neighbor)
 	{
 		auto next_point = each_direction.walk(point, 1);
 		auto statu = get_game_map(next_point);

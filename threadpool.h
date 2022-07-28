@@ -1,5 +1,5 @@
 #pragma once
-#define THREAD_MAX_NUM 4
+#define THREAD_MAX_NUM 6
 
 #include <vector>
 #include <queue>

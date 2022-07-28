@@ -6,7 +6,7 @@ using myfunc::exclude;
 Direction Gen_data::choos_a_direction(const Point& point)
 {
 	std::vector<Direction> legal_direction;
-	for (const auto& _direct : Direction::eight_direction)
+	for (const auto& _direct : Direction::eight_neighbor)
 		if (!_direct.walk(point, lined_num - 1).outofrange())
 			legal_direction.push_back(_direct);
 	return Random::rand_choice(legal_direction);
@@ -21,7 +21,7 @@ std::vector<Point> Gen_data::get_destination(Lined_chess& lined)
 	return destinations;
 }
 
-Lined_chess Gen_data::get_lined_chess(Board_pattern& pattern)
+Lined_chess Gen_data::get_lined_chess()
 {
 	Lined_chess lined_chess;
 	Point point;
@@ -39,11 +39,11 @@ Lined_chess Gen_data::get_lined_chess(Board_pattern& pattern)
 void Gen_data::fill_empty()
 {
 	std::vector<Point>exclusion;
-	exclusion.insert(exclusion.end(), pattern->lined.begin(), pattern->lined.end());
-	exclusion.insert(exclusion.end(), pattern->path.begin(), pattern->path.end());
+	exclusion.insert(exclusion.end(), pattern.lined.begin(), pattern.lined.end());
+	exclusion.insert(exclusion.end(), pattern.path.begin(), pattern.path.end());
 	int num_to_fill = BOARD_SIZE * BOARD_SIZE * fill_ratio - lined_num - 1;
-	if (!pattern->another_destination.outofrange()&&!myfunc::is_inlist(pattern->another_destination,pattern->path))
-		exclusion.push_back(pattern->another_destination);
+	if (!pattern.another_destination.outofrange() && !myfunc::is_inlist(pattern.another_destination, pattern.path))
+		exclusion.push_back(pattern.another_destination);
 #ifdef _DEBUG
 	assert(myfunc::is_unique(exclusion));
 #endif // _DEBUG
@@ -53,52 +53,64 @@ void Gen_data::fill_empty()
 	for (size_t i = 0; i < num_to_fill; i++)
 	{
 		auto index = Random::randint(_empty.size());
-		pattern->other.push_back(*_empty[index]);
+		pattern.other.push_back(*_empty[index]);
 		_empty.erase(_empty.begin() + index);
 		//game_map->_empty.erase(empty.begin()+index);
 	}
 
 }
 
-
-Gen_data::Return_message Gen_data::go()
+void Gen_data::set_rand_next_three()
 {
-	auto lined = get_lined_chess(*pattern);
-	pattern->set(lined);
-	auto path = A_star(lined).get_path();
-	pattern->set_path(path);
-	fill_empty();
-	paint();
-	return{ game_map,pattern };
+	game_map->set_next_three({ Color::rand_color(),Color::rand_color() ,Color::rand_color() });
+}
+
+
+void Gen_data::go()
+{
+	do
+	{
+		reset();
+		auto lined = get_lined_chess();
+		pattern.set(lined);
+		auto path = A_star(lined).get_path();
+		pattern.set_path(path);
+		fill_empty();
+		paint();
+	} while (!validate());
+	set_rand_next_three();
 }
 
 void Gen_data::paint()
 {
 	auto color = Color::rand_color();
-	game_map->set(pattern->startpoint, color);
-	game_map->set(pattern->lined, color);
-	if (!pattern->another_destination.outofrange())
-		game_map->set(pattern->another_destination, Color::rand_statu_except(color));
-	for (const auto& point : pattern->other)
+	game_map->set(pattern._move.start, color);
+	game_map->set_all(pattern.lined, color);
+	if (!pattern.another_destination.outofrange()&&!myfunc::is_inlist(pattern.another_destination,pattern.path))
+		game_map->set(pattern.another_destination, Color::rand_statu_except(color));
+	for (const auto& point : pattern.other)
 		game_map->set(point, Color::rand_color());
 }
 
-#ifdef _print
+#ifdef _PRINT
 void Gen_data::print()
 {
-	pattern->print();
+	pattern.print();
 	game_map->print();
 }
-#endif // DEBUGvoid Gen_data::print()
+#endif // DEBUG
+bool Gen_data::validate()const
+{
+	return Game_rule::Scan_all(game_map).empty();
+}
 
 void Board_pattern::set(Lined_chess& _lined)
 {
-	destination = _lined.destination;
-	startpoint = _lined.startpoint;
+	_move = Move(_lined.startpoint, _lined.destination);
 	lined = _lined.points;
 	if (_lined.possible_destinations.size() == 2)
 		for (const auto& point : _lined.possible_destinations)
-			if (point != destination)
+			if (point != _move.end)
 				another_destination = point;
 }
 
@@ -107,21 +119,23 @@ void Board_pattern::set_path(const std::vector<Point>& _path)
 	path = _path;
 }
 #ifdef _PRINT
-void Board_pattern::print()
+void Board_pattern::print()const
 {
 	using std::cout;
 	using std::cin;
 	using std::endl;
 	cout << "startpoint: ";
-	startpoint.print();
+	_move.start.print();
 	cout << endl << "path: ";
 	for (const auto& point : path)
 		point.print();
 	cout << endl << "endpoint: ";
-	destination.print();
+	_move.end.print();
 	cout << endl << "lined: ";
 	for (const auto& point : lined)
 		point.print();
 	cout << endl;
 }
 #endif // DEBUG
+
+
