@@ -5,6 +5,14 @@
 
 void Game_map::print()const
 {
+	std::cout << std::endl;
+
+	//next_three
+	std::cout << "      ";
+	for (auto&& point : next_three)
+		std::cout << int(point) << " ";
+
+
 	for (size_t i = 0; i < _data.size(); i++)
 	{
 		if (i % BOARD_SIZE == 0)

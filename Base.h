@@ -43,6 +43,10 @@ public:
 	bool operator!= (const Color& a)const {
 		return this->value != a.value;
 	}
+	explicit operator int() const
+	{
+		return int(value);
+	}
 #ifdef _PRINT
 public:
 	int print()const { return (int)value; };

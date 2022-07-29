@@ -8,7 +8,8 @@ using namespace export_bind;
 PYBIND11_MODULE(gen_colorline_data, m)
 {
 	m.doc() = "Generate ColorLine data";
-	m.def("get_data", &generate_data, "123");
+	m.def("a", &generate_data, "123");
+	m.def("b", &get_result, "123");
 
 
 
@@ -38,7 +39,7 @@ PYBIND11_MODULE(gen_colorline_data, m)
 			});
 
 	py::class_<Data_pack>(m, "Data_pack")
-		.def(py::init<const Transition&>())
+		.def(py::init<int,float>())
 		.def_readonly("last",		&Data_pack::last)
 		.def_readonly("last_mask",	&Data_pack::last_mask)
 		.def_readonly("next",		&Data_pack::next)

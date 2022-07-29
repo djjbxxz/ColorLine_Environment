@@ -1,5 +1,11 @@
 #pragma once
+
+#ifdef _DEBUG
+#define THREAD_MAX_NUM 1
+#else
 #define THREAD_MAX_NUM 6
+#endif // _DEBUG
+
 
 #include <vector>
 #include <queue>

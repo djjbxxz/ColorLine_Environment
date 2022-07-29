@@ -16,7 +16,7 @@ int Game_rule::rule()
 	_move_act();
 	auto try_lined = Scan_Lined(move.end);
 	if (!try_lined.empty())
-		lineds.push_back(std::move(try_lined));
+		lineds.push_back(try_lined);
 	int score = Addscore_eliminate();
 	if (score == 0)
 		after->set_next_three(get_next_three());
@@ -86,12 +86,12 @@ void Game_rule::_scan_lined(const Point& point, Direction direction, std::vector
 
 std::vector<Point> Game_rule::Scan_Lined(const Point& point)const
 {
-	auto& game_map = before;
-	for (auto&& direction : Direction::four_neighbor)
+	auto& game_map = after;
+	for (auto&& direction : Direction::scan_direction)
 	{
 		std::vector<Point>lined;
-		_scan_lined(point, direction, lined, before);
-		_scan_lined(point, -direction, lined, before);
+		_scan_lined(point, direction, lined, game_map);
+		_scan_lined(point, -direction, lined, game_map);
 		lined.push_back(point);
 		if (lined.size() >= 5)
 			return lined;
