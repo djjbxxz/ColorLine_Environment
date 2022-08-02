@@ -2,7 +2,7 @@
 
 #include "my_func.h"
 #include <map>
-
+#include <algorithm>
 #ifdef _PRINT
 #include <iostream>
 #endif // _PRINT
@@ -246,7 +246,7 @@ public:
 		for (auto&& point : points)
 			set(point, _statu);
 	}
-	const _Statu& get(const Point& point)const
+	_Statu get(const Point& point)const
 	{
 #ifdef _DEBUG
 		assert(_data.size() > point.index());

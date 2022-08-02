@@ -17,8 +17,8 @@ int main()
 
 #ifdef _DEBUG
 	using namespace std;
-	int lined_num = 4;
-	float fill_ratio = 0.99;
+	int lined_num = 3;
+	float fill_ratio = 0.9;
 	int times = 1;
 
 	generate_data(times, lined_num, fill_ratio);
