@@ -237,8 +237,6 @@
     <ClInclude Include="gen_data.h" />
     <ClInclude Include="legel_mask.h" />
     <ClInclude Include="my_func.h" />
-    <ClInclude Include="Pathfinding.h" />
-    <ClInclude Include="threadpool.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />

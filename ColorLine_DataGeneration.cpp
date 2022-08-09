@@ -17,22 +17,21 @@ int main()
 
 #ifdef _DEBUG
 	using namespace std;
-	int lined_num = 3;
-	float fill_ratio = 0.9;
+	int lined_num = 4;
+	float fill_ratio = 1;
 	int times = 1;
 
-	generate_data(times, lined_num, fill_ratio);
-	std::vector< Data_pack*> results;
-	results.reserve(times);
-	FOR_RANGE(i, times)
-		results.push_back(get_result(i));
-	auto result = results[0];
-	result->last->print();
-	result->next->print();
-	auto& mask = *result->last_mask;
-	Move::from_densed(result->move).print();
-	cout << mask[result->move-1] << mask[result->move] << mask[result->move+1] <<endl;
-	cout << "Score : " << result->reward;
+	auto game_map = Game_map();
+	auto a = Gen_data(lined_num, fill_ratio, &game_map);
+	a.go();
+	game_map.print();
+	auto mask = Legal_mask(game_map).get_result();
+	auto &move = a.pattern._move;
+	move.print();
+
+	auto reward = Game_rule(game_map, move).rule();
+	game_map.print();
+	std::cout << "reward: " << reward<<std::endl;
 #endif
 
 #ifdef _PERFTEST

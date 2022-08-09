@@ -16,9 +16,20 @@ public:
 	Moveable_mask get_result()const {
 		return mask;
 	};
-	Legal_mask(Game_map* _game_map) :game_map(_game_map) {
+	Legal_mask(const Game_map& _game_map) :game_map(_game_map) {
 		mask = Moveable_mask(POTENTIAL_MOVE_NUM, false);
 		go();
+	}
+	static Move get_random_move(const Moveable_mask& mask)
+	{
+		std::vector<int>temp;
+		temp.reserve(mask.size());
+		FOR_RANGE(i, mask.size())
+		{
+			if (mask[i])
+				temp.push_back(i);
+		}
+		return Move(Random::rand_choice(temp));
 	}
 private:
 	void GetEmptySet();
@@ -30,7 +41,7 @@ private:
 	std::vector<Point> grow_to_max(const Point& startpoint, bool_map& scaned_map);
 
 private:
-	const Game_map* game_map;
+	const Game_map& game_map;
 	Moveable_mask mask;
 	std::vector<std::vector<Point>>emptyset;
 	std::vector<std::vector<Point>>startset;

@@ -12,9 +12,9 @@ std::vector<Point> Legal_mask::grow_to_max(const Point& startpoint, bool_map& sc
 	FOR_RANGE(i,result.size())
 	{
 		auto& point = result[i];
-		auto temp = game_map->get_surround_by_filter(point, [&](const Point& new_point)
+		auto temp = game_map.get_surround_by_filter(point, [&](const Point& new_point)
 			{return (!new_point.outofrange()) &&
-			(game_map->get(point) == game_map->get(new_point)) &&
+			(game_map.get(point) == game_map.get(new_point)) &&
 			(scaned_map.get(new_point) == false);
 			});
 		//if (!temp.empty())
@@ -33,7 +33,7 @@ void Legal_mask::GetEmptySet()
 	FOR_RANGE(i,scaned_map._data.size())
 	{
 		auto point = Point(i);
-		if ((scaned_map.get(point) == false) && (game_map->get(point) == Color::empty))
+		if ((scaned_map.get(point) == false) && (game_map.get(point) == Color::empty))
 			emptyset.push_back(grow_to_max(point, scaned_map));
 	}
 
@@ -51,7 +51,7 @@ void Legal_mask::go()
 void Legal_mask::GetBeginSet()
 {
 	for (auto&& i : emptyset)
-		startset.push_back(game_map->dilate(i));
+		startset.push_back(game_map.dilate(i));
 }
 
 void Legal_mask::MakeResult()

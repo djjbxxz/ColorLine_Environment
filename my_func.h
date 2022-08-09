@@ -3,7 +3,6 @@
 #include <vector>
 #include <random>
 
-
 #ifdef _DEBUG
 #include <assert.h>
 #endif // DEBUG
@@ -177,6 +176,8 @@ public:
 #ifdef _DEBUG
 		assert(max > 0 && max <= INT32_MAX);
 #endif
+		if (max == 0)
+			throw "function: randint arg[0] can not be zero!";
 		return (_random(mt)) % max;
 	}
 

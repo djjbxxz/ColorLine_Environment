@@ -59,8 +59,10 @@ public:
 	char x, y;
 	Point(char	_x, char _y) :x(_x), y(_y) {};
 	Point(int	_x, int _y) :x(_x), y(_y) {};
-	Point(char index) { x = index / BOARD_SIZE; y = index % BOARD_SIZE; };
-	Point(int index) { x = index / BOARD_SIZE; y = index % BOARD_SIZE; };
+	Point(char index) {
+		x = index / BOARD_SIZE; y = index % BOARD_SIZE; };
+	Point(int index) {
+		x = index / BOARD_SIZE; y = index % BOARD_SIZE; };
 	//Point() =delete;
 	Point(const Point& point) {
 		x = point.x; y = point.y;
@@ -199,14 +201,15 @@ public:
 	operator int() const {
 		return to_densed();
 	};
-	static Move from_densed(int densed)
+	Move (int densed)
 	{
 		char x1, y1, x2, y2;
 		x1 = densed / (BOARD_SIZE * BOARD_SIZE * BOARD_SIZE);
 		y1 = densed / (BOARD_SIZE * BOARD_SIZE) - x1 * BOARD_SIZE;
 		x2 = densed / BOARD_SIZE - x1 * BOARD_SIZE * BOARD_SIZE - y1 * BOARD_SIZE;
 		y2 = densed % BOARD_SIZE;
-		return{ {x1,y1},{x2,y2} };
+		start={ x1,y1 };
+		end = { x2,y2 };
 	}
 	int to_densed()const {
 		return start.x * BOARD_SIZE * BOARD_SIZE * BOARD_SIZE + start.y * BOARD_SIZE * BOARD_SIZE + end.x * BOARD_SIZE + end.y;

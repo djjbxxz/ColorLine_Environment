@@ -41,7 +41,6 @@ void Gen_data::fill_empty()
 	std::vector<Point>exclusion;
 	exclusion.insert(exclusion.end(), pattern.lined.begin(), pattern.lined.end());
 	exclusion.insert(exclusion.end(), pattern.path.begin(), pattern.path.end());
-	int num_to_fill = BOARD_SIZE * BOARD_SIZE * fill_ratio - lined_num - 1;
 	if (!pattern.another_destination.outofrange() && !myfunc::is_inlist(pattern.another_destination, pattern.path))
 		exclusion.push_back(pattern.another_destination);
 #ifdef _DEBUG
@@ -49,6 +48,8 @@ void Gen_data::fill_empty()
 #endif // _DEBUG
 
 	auto _empty = exclude(game_map->_empty, exclusion);
+	int num_to_fill = BOARD_SIZE * BOARD_SIZE * fill_ratio - lined_num - 1;
+	num_to_fill = num_to_fill > 0 ? num_to_fill : 0;
 	num_to_fill = num_to_fill > _empty.size() ? _empty.size() : num_to_fill;
 	for (size_t i = 0; i < num_to_fill; i++)
 	{
@@ -86,7 +87,7 @@ void Gen_data::paint()
 	auto color = Color::rand_color();
 	game_map->set(pattern._move.start, color);
 	game_map->set_all(pattern.lined, color);
-	if (!pattern.another_destination.outofrange()&&!myfunc::is_inlist(pattern.another_destination,pattern.path))
+	if (!pattern.another_destination.outofrange() && !myfunc::is_inlist(pattern.another_destination, pattern.path))
 		game_map->set(pattern.another_destination, Color::rand_statu_except(color));
 	for (const auto& point : pattern.other)
 		game_map->set(point, Color::rand_color());
@@ -101,7 +102,7 @@ void Gen_data::print()
 #endif // DEBUG
 bool Gen_data::validate()const
 {
-	return Game_rule::Scan_all(game_map).empty();
+	return Game_rule::Scan_all(*game_map).empty();
 }
 
 void Board_pattern::set(Lined_chess& _lined)

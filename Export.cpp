@@ -9,9 +9,10 @@ using namespace export_bind;
 PYBIND11_MODULE(gen_colorline_data, m)
 {
 	m.doc() = "Generate ColorLine data";
-	m.def("gen_data", &generate_data, "123");
-	m.def("get", &get_result, "123");
-	m.def("delete", &delete_data, "123");
+	m.def("get_random_start", &generate_data, "123");
+	m.def("get_valid_mask", &get_valid_mask, "123");
+	m.def("_994_to_9928", &_994_to_9928, "123");
+	m.def("rule", &rule, "123");
 
 
 	pybind11::class_<Game_map>(m, "Game_map", pybind11::buffer_protocol())
@@ -64,20 +65,6 @@ PYBIND11_MODULE(gen_colorline_data, m)
 		);
 
 			});
-
-	py::class_<Data_pack>(m, "Data_pack")
-		.def(py::init<int, float>())
-		.def_readonly("last", &Data_pack::last)
-		.def_readonly("last_3", &Data_pack::last_3)
-		.def_readonly("last_mask", &Data_pack::last_mask)
-		.def_readonly("next", &Data_pack::next)
-		.def_readonly("next_3", &Data_pack::next_3)
-		.def_readonly("next_mask", &Data_pack::next_mask)
-		.def_readonly("reward", &Data_pack::reward)
-		.def_readonly("move", &Data_pack::move)
-		.def_readonly("last_9928", &Data_pack::last_game_statu);
-
-	// ... remainder ...
 
 }
 #endif // _EXPORT
