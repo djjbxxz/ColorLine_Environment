@@ -6,11 +6,17 @@
 #ifdef _PRINT
 #include <iostream>
 #endif // _PRINT
-
+#include <array>
 using myfunc::Random;
 
-constexpr auto BOARD_SIZE = 9;
+constexpr auto COLOR_NUM= 3;
+constexpr auto BOARD_SIZE = 5;
+constexpr auto COMING_CHESS_NUM = 1;
+constexpr auto MIN_ELEMINATABLE_NUM = 4;
+constexpr auto EACH_CHESS_ELEMINATED_REWARD = 2;
+constexpr auto CHESS_NUM = BOARD_SIZE*BOARD_SIZE;
 constexpr auto POTENTIAL_MOVE_NUM = BOARD_SIZE * BOARD_SIZE * BOARD_SIZE * BOARD_SIZE;
+
 class Color {
 	enum class _color :char
 	{
@@ -28,14 +34,13 @@ public:
 	Color() :value(_color::empty) {};
 public:
 	_color value;
-	static const std::vector<Color> all_color;
-	static const std::vector<Color> all_statu;
+	static const std::array<Color, COLOR_NUM> all_color;
+	static const std::array<Color, COLOR_NUM+1> all_statu;
 	static const Color empty;
 public:
 	static Color rand_color_except(std::vector<Color>& exclusion);
 	static Color rand_color_except(Color _color);
 	static Color rand_color();
-	//static Color rand_statu();
 	static Color rand_statu_except(Color _color);
 	bool operator== (const Color& a)const {
 		return this->value == a.value;
@@ -47,6 +52,9 @@ public:
 	{
 		return int(value);
 	}
+private:
+	static std::array<Color, COLOR_NUM>all_color_init();
+	static std::array<Color, COLOR_NUM+1>all_statu_init();
 #ifdef _PRINT
 public:
 	int print()const { return (int)value; };
@@ -181,9 +189,9 @@ public:
 	};
 public:
 	static const std::map < Direction::_direction, Point > direct2point;
-	static const std::vector <Direction> eight_neighbor;
-	static const std::vector <Direction> four_neighbor;
-	static const std::vector <Direction> scan_direction;
+	static const std::array <Direction,8> eight_neighbor;
+	static const std::array <Direction,4> four_neighbor;
+	static const std::array <Direction,4> scan_direction;
 
 };
 
@@ -256,10 +264,9 @@ public:
 #endif // _DEBUG
 		return _data[point.index()];
 	}
-
 	void reset(int num, _Statu value)
 	{
-		_data = std::vector<_Statu>(num, value);
+		_data = {};
 	};
 
 	template<typename FUNC>
@@ -295,7 +302,7 @@ public:
 		return result;
 	}
 public:
-	std::vector<_Statu> _data;
+	std::array<_Statu, CHESS_NUM> _data{};
 	};
 
 class Game_map :public _MAP<Color>
@@ -307,13 +314,13 @@ public:
 	Game_map& operator= (const Game_map& other)
 	{
 		_data = other._data;
-		next_three = other.next_three;
+		coming_chess = other.coming_chess;
 		return *this;
 	}//Copy assignment
 	Game_map(Game_map&& g)noexcept
 	{
 		_data = std::move(g._data);
-		next_three = std::move(g.next_three);
+		coming_chess = std::move(g.coming_chess);
 	};
 	Color& operator[](int index)
 	{
@@ -327,21 +334,21 @@ public:
 	const Point& pick_a_spot(const std::vector<Point>& exclusion)const;
 	const Point& pick_a_spot()const;
 	void reset() {
-		_data = std::vector<Color>(BOARD_SIZE * BOARD_SIZE);
-		next_three = std::vector<Color>(3);
+		_data = { Color::empty };
+		coming_chess = {Color::empty};
 	};
-	void set_next_three(const std::vector<Color>& _next_three) {
-		next_three = _next_three;
+	void set_coming_chess(const std::array<Color,COMING_CHESS_NUM>& _coming_chess) {
+		coming_chess = _coming_chess;
 	}
 	Color* get__data_ptr() {
 		return _data.data();
 	};
 public:
-	const static std::vector<Point> _empty;
+	const static std::array<Point,CHESS_NUM> _empty;
 private:
-	static std::vector<Point> _empty_init();
+	static std::array<Point, CHESS_NUM> _empty_init();
 public:
-	std::vector<Color> next_three;
+	std::array<Color,COMING_CHESS_NUM> coming_chess;
 #ifdef _PRINT
 public:
 	void print()const;
@@ -393,5 +400,4 @@ public:
 private:
 
 };
-
 

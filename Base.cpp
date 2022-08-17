@@ -12,34 +12,34 @@ const std::map < Direction::_direction, Point > Direction::direct2point = std::m
 	   {_direction::northwest,{ -1,-1 }}
 };
 
-const std::vector<Direction> Direction::eight_neighbor = std::vector<Direction>{
-	{_direction::north},
-	{_direction::northeast},
-	{_direction::east},
-	{_direction::southeast},
-	{_direction::south},
-	{_direction::southwest},
-	{_direction::west},
-	{_direction::northwest}
+const std::array <Direction, 8> Direction::eight_neighbor{
+	_direction::north,
+		_direction::northeast,
+		_direction::east,
+		_direction::southeast,
+		_direction::south,
+		_direction::southwest,
+		_direction::west,
+		_direction::northwest
 };
 
-const std::vector<Direction> Direction::four_neighbor = std::vector<Direction>{
-	{_direction::north},
-	{_direction::east},
-	{_direction::south},
-	{_direction::west}
+const std::array <Direction, 4> Direction::four_neighbor ={
+	_direction::north,
+		_direction::east,
+		_direction::south,
+		_direction::west
 };
 
-const std::vector<Direction> Direction::scan_direction = std::vector<Direction>{
-	{_direction::north},
-	{_direction::northeast},
-	{_direction::east},
-	{_direction::southeast}
+const std::array <Direction, 4> Direction::scan_direction ={
+	_direction::north,
+		_direction::northeast,
+		_direction::east,
+		_direction::southeast
 };
 
 Color Color::rand_color_except(std::vector<Color>& exclusion)
 {
-	auto temp = all_color;
+	auto temp = myfunc::from_std_array(all_color);
 	std::remove_if(temp.begin(), temp.end(),
 		[&](Color& point) ->bool {
 			return !(std::find(exclusion.begin(), exclusion.end(), point) == exclusion.end());
@@ -49,7 +49,7 @@ Color Color::rand_color_except(std::vector<Color>& exclusion)
 
 Color Color::rand_color_except(Color _color)
 {
-	auto temp = all_color;
+	auto temp = myfunc::from_std_array(all_color);
 	temp.erase(std::find(temp.begin(), temp.end(), _color));
 	return Random::rand_choice(temp);
 
@@ -62,41 +62,49 @@ Color Color::rand_color()
 
 Color Color::rand_statu_except(Color _color)
 {
-	auto temp = all_statu;
+	auto temp = myfunc::from_std_array(all_statu);
 	temp.erase(std::find(temp.begin(), temp.end(), _color));
 	return Random::rand_choice(temp);
 }
 
-const std::vector<Color> Color::all_color = std::vector<Color>{
-	_color::green,
-	_color::red,
-	_color::dark_blue,
-	_color::yellow,
-	_color::light_blue,
-	_color::purple,
-	_color::brown
-};
+const std::array<Color, COLOR_NUM> Color::all_color = Color::all_color_init();
 
-const std::vector<Color> Color::all_statu = std::vector<Color>{
-	_color::empty,
-	_color::green,
-	_color::red,
-	_color::dark_blue,
-	_color::yellow,
-	_color::light_blue,
-	_color::purple,
-	_color::brown
-};
+const std::array<Color, COLOR_NUM + 1> Color::all_statu = Color::all_statu_init();
 
 const Color Color::empty = Color(_color::empty);
 
-std::vector<Point> Game_map::_empty_init()
+std::array<Point, CHESS_NUM> Game_map::_empty_init()
 {
-	std::vector<Point>__empty;
-	__empty.reserve(BOARD_SIZE * BOARD_SIZE);
+	std::array<Point, CHESS_NUM>__empty;
 	for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; i++)
-		__empty.emplace_back(i);
+		__empty[i] = i;
 	return __empty;
 }
-//const std::vector<Point> Game_map::_empty = std::vector<Point>{ };
-const std::vector<Point> Game_map::_empty = Game_map::_empty_init();
+
+const std::array<Point, CHESS_NUM> Game_map::_empty = Game_map::_empty_init();
+
+std::array<Color, COLOR_NUM>Color::all_color_init()
+{
+	std::array<Color, 7> all_color = {
+	_color::green,
+	_color::red,
+	_color::dark_blue,
+	_color::yellow,
+	_color::light_blue,
+	_color::purple,
+	_color::brown
+	};
+	std::array<Color, COLOR_NUM>temp;
+	FOR_RANGE(i, COLOR_NUM)
+		temp[i] = all_color[i];
+	return temp;
+}
+
+std::array<Color, COLOR_NUM + 1>Color::all_statu_init()
+{
+	std::array<Color, COLOR_NUM + 1>temp;
+	temp[0] = Color::empty;
+	FOR_RANGE(i, COLOR_NUM)
+		temp[i + 1] = all_color[i];
+	return temp;
+}

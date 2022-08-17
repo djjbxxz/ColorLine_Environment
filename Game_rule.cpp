@@ -18,32 +18,41 @@ int Game_rule::rule()
 	if (score == 0)
 	{
 		auto lineds = std::vector<std::vector<Point>>();
-		auto _where = lay_three();
+		auto _where = lay_coming_chess();
+		if (is_game_end)
+			return -1;
 		for (auto&& point : _where)
 		{
 			auto lined = Scan_a_point(point, game_map);
 			lineds.insert(lineds.end(), lined.begin(), lined.end());
 		}
-		Addscore_eliminate(lineds, false);
-		game_map.set_next_three(get_next_three());
+		score += Addscore_eliminate(lineds, false);
+
+		game_map.set_coming_chess(get_coming_chess());
 	}
-	return score;
+
+	return is_game_end ? -1 : score;
 }
 
-std::vector<Point> Game_rule::lay_three()
+std::vector<Point> Game_rule::lay_coming_chess()
 {
 	std::vector<Point>_wheres;
 	auto empty = get_empty();
-	for (auto&& color : game_map.next_three)
+	for (auto&& color : game_map.coming_chess)
 	{
 		if (empty.empty())
+		{
+			is_game_end = true;
 			break;
+		}
 		auto index = Random::randint(empty.size());
 		auto& _where = empty[index];
 		game_map.set(_where, color);
 		_wheres.push_back(_where);
 		empty.erase(empty.begin() + index);
 	}
+	if (empty.empty())
+		is_game_end = true;
 	return _wheres;
 }
 
@@ -66,7 +75,7 @@ std::vector<std::vector<Point>> Game_rule::Scan_a_point(const Point& point, cons
 		_scan_along_direction(point, direction, lined, game_map);
 		_scan_along_direction(point, -direction, lined, game_map);
 		lined.push_back(point);
-		if (lined.size() >= 5)
+		if (lined.size() >= MIN_ELEMINATABLE_NUM)
 			temp.push_back(lined);
 	}
 	return 	temp;
@@ -89,7 +98,7 @@ int Game_rule::Addscore_eliminate(const std::vector<std::vector<Point>>& lineds,
 			{
 				game_map.set(point, Color::empty);
 				if (add_score)
-					instant_reward += 2;
+					instant_reward += EACH_CHESS_ELEMINATED_REWARD;
 			}
 		}
 	}
@@ -112,11 +121,10 @@ void Game_rule::_scan_along_direction(const Point& point, Direction direction, s
 }
 
 
-std::vector<Color> Game_rule::get_next_three()
+std::array<Color, COMING_CHESS_NUM> Game_rule::get_coming_chess()
 {
-	auto next_three = std::vector<Color>();
-	next_three.reserve(3);
-	for (int i = 0; i < 3; i++)
-		next_three.push_back(Color::rand_color());
-	return next_three;
+	std::array<Color, COMING_CHESS_NUM>coming_chess;
+	FOR_RANGE(i, COMING_CHESS_NUM)
+		coming_chess[i] = Color::rand_color();
+	return coming_chess;
 }

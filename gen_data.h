@@ -37,7 +37,7 @@ class Gen_data
 	std::vector<Point> get_destination(Lined_chess& lined);
 	Lined_chess get_lined_chess();
 	void fill_empty();
-	void set_rand_next_three();
+	void set_rand_coming_chess();
 	void go();
 	void paint();
 	void reset() {

@@ -5,7 +5,7 @@ class Game_rule
 {
 public:
 	Game_rule(Game_map& _game_map, Move _move)
-		:game_map(_game_map), move(_move)
+		:game_map(_game_map), move(_move),is_game_end(false)
 	{
 	}
 public:
@@ -15,12 +15,13 @@ private:
 	static std::vector<std::vector<Point>> Scan_a_point(const Point& point, const Game_map& game_map);
 	void _move_act();
 	int Addscore_eliminate(const std::vector<std::vector<Point>>& ,bool);
-	std::vector<Point> lay_three();
+	std::vector<Point> lay_coming_chess();
 	std::vector<Point> get_empty();
-	static std::vector<Color> get_next_three();
+	std::array<Color, COMING_CHESS_NUM> get_coming_chess();
 private:
 	static void _scan_along_direction(const Point& point, Direction direction, std::vector<Point>&, const Game_map&);
 private:
 	Game_map& game_map;
 	Move move;
+	bool is_game_end;
 };

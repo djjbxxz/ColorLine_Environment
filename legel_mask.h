@@ -10,7 +10,7 @@ private:
 	{
 	public:
 		bool_map() { reset(); }
-		void reset() { _data = std::vector<bool>(BOARD_SIZE * BOARD_SIZE, false); };
+		void reset() { _data = {}; };
 	};
 public:
 	Moveable_mask get_result()const {

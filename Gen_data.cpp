@@ -56,14 +56,16 @@ void Gen_data::fill_empty()
 		auto index = Random::randint(_empty.size());
 		pattern.other.push_back(*_empty[index]);
 		_empty.erase(_empty.begin() + index);
-		//game_map->_empty.erase(empty.begin()+index);
 	}
 
 }
 
-void Gen_data::set_rand_next_three()
+void Gen_data::set_rand_coming_chess()
 {
-	game_map->set_next_three({ Color::rand_color(),Color::rand_color() ,Color::rand_color() });
+	std::array<Color, COMING_CHESS_NUM>temp;
+	FOR_RANGE(i, COMING_CHESS_NUM)
+		temp[i] = Color::rand_color();
+	game_map->set_coming_chess(temp);
 }
 
 
@@ -79,7 +81,7 @@ void Gen_data::go()
 		fill_empty();
 		paint();
 	} while (!validate());
-	set_rand_next_three();
+	set_rand_coming_chess();
 }
 
 void Gen_data::paint()

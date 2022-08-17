@@ -9,7 +9,7 @@ void Game_map::print()const
 
 	//next_three
 	std::cout << "      ";
-	for (auto&& point : next_three)
+	for (auto&& point : coming_chess)
 		std::cout << int(point) << " ";
 
 

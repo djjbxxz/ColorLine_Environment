@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-
+constexpr auto INPUT_CHANNEL_SIZE = (1+COMING_CHESS_NUM)*COLOR_NUM;
 namespace export_bind
 {
 	class game_statu_9928
@@ -10,33 +10,33 @@ namespace export_bind
 	public:
 		game_statu_9928() {
 			int* t = (int*)value;
-			FOR_RANGE(i, 9 * 9 * 28)
+			FOR_RANGE(i, BOARD_SIZE * BOARD_SIZE * INPUT_CHANNEL_SIZE)
 				* (t + i) = 0;
 		};
 		game_statu_9928(const Game_map& game_statu) {
 			auto game_map = game_statu._data;
-			auto next_three = game_statu.next_three;
+			auto coming_chess = game_statu.coming_chess;
 			int* ptr_game_map_9928 = (int*)value;
-			FOR_RANGE(i, 9 * 9 * 28)
+			FOR_RANGE(i, BOARD_SIZE * BOARD_SIZE * INPUT_CHANNEL_SIZE)
 				* (ptr_game_map_9928 + i) = 0;
 
 
-			for (int index = 0; index < 3; index++)
+			for (int index = 0; index < COMING_CHESS_NUM; index++)
 			{
-				int color = (int)next_three[index];
-				for (int i = 0; i < 9; i++)
+				int color = (int)coming_chess[index];
+				for (int i = 0; i < BOARD_SIZE; i++)
 				{
-					for (int j = 0; j < 9; j++)
+					for (int j = 0; j < BOARD_SIZE; j++)
 					{
-						value[i][j][6 + index * 7 + color] = 1;
+						value[i][j][(COLOR_NUM-1) + index * COLOR_NUM + color] = 1;
 					}
 				}
 
 			}
 
-			for (int i = 0; i < 9; i++)
+			for (int i = 0; i < BOARD_SIZE; i++)
 			{
-				for (int j = 0; j < 9; j++)
+				for (int j = 0; j < BOARD_SIZE; j++)
 				{
 					int t = (int)game_map[i * BOARD_SIZE + j];
 					if (t)
@@ -44,7 +44,7 @@ namespace export_bind
 				}
 			}
 		}
-		int value[9][9][28];
+		int value[BOARD_SIZE][BOARD_SIZE][INPUT_CHANNEL_SIZE];
 	};
 
 	Game_map generate_data(int lined_num, float fill_ratio)

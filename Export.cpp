@@ -60,8 +60,8 @@ PYBIND11_MODULE(gen_colorline_data, m)
 			sizeof(int),									/* Size of one scalar */
 			pybind11::format_descriptor<int>::format(),	/* Python struct-style format descriptor */
 			3,												/* Number of dimensions */
-			{ BOARD_SIZE,BOARD_SIZE ,28 },						/* Buffer dimensions */
-			{ sizeof(int) * BOARD_SIZE * 28,sizeof(int) * 28,sizeof(int) }   /* Strides (in bytes) for each index */
+			{ BOARD_SIZE,BOARD_SIZE ,INPUT_CHANNEL_SIZE },						/* Buffer dimensions */
+			{ sizeof(int) * BOARD_SIZE * INPUT_CHANNEL_SIZE,sizeof(int) * INPUT_CHANNEL_SIZE,sizeof(int) }   /* Strides (in bytes) for each index */
 		);
 
 			});
