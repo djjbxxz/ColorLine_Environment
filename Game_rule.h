@@ -14,10 +14,11 @@ public:
 private:
 	static std::vector<std::vector<Point>> Scan_a_point(const Point& point, const Game_map& game_map);
 	void _move_act();
-	int Addscore_eliminate(const std::vector<std::vector<Point>>& ,bool);
+	int Addscore();
 	std::vector<Point> lay_coming_chess();
 	std::vector<Point> get_empty();
 	std::array<Color, COMING_CHESS_NUM> get_coming_chess();
+	int try_move_score();
 private:
 	static void _scan_along_direction(const Point& point, Direction direction, std::vector<Point>&, const Game_map&);
 private:

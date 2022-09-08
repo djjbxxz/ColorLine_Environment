@@ -41,10 +41,12 @@ void Legal_mask::GetEmptySet()
 
 void Legal_mask::go()
 {
-	mask.reserve(POTENTIAL_MOVE_NUM);
-	GetEmptySet();
-	GetBeginSet();
-	MakeResult();
+	mask.reserve(BOARD_SIZE* BOARD_SIZE);
+	
+	FOR_RANGE(i, BOARD_SIZE)
+		FOR_RANGE(j, BOARD_SIZE)
+		if (game_map.get({ i,j }) == Color::empty)
+			mask[i * BOARD_SIZE + j] = true;
 }
 
 
@@ -64,12 +66,5 @@ void Legal_mask::MakeResult()
 
 void Legal_mask::calculate(const std::vector<Point>& start, const std::vector<Point>& end)
 {
-	for (auto&& i : start)
-		for (auto&& j : end)
-		{
-#ifdef _DEBUG
-			assert(mask[Move(i, j).to_densed()] == false);
-#endif // _DEBUG
-			mask[Move(i, j).to_densed()] = true;
-		}
+
 }

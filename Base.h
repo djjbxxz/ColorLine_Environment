@@ -9,9 +9,9 @@
 #include <array>
 using myfunc::Random;
 
-constexpr auto COLOR_NUM= 3;
+constexpr auto COLOR_NUM= 7;
 constexpr auto BOARD_SIZE = 5;
-constexpr auto COMING_CHESS_NUM = 1;
+constexpr auto COMING_CHESS_NUM = 3;
 constexpr auto MIN_ELEMINATABLE_NUM = 4;
 constexpr auto EACH_CHESS_ELEMINATED_REWARD = 2;
 constexpr auto CHESS_NUM = BOARD_SIZE*BOARD_SIZE;
@@ -198,37 +198,20 @@ public:
 class Move
 {
 public:
-	Point start;
-	Point end;
-	Move(const Point& p1, const Point& p2) :start(p1), end(p2) {};
+	Point target;
+	Move(const Point& p1, const Point& p2) :target(p1) {};
+	Move(int index) :target(index) {};
+	Move() {};
 	bool operator==(const Move& a)const
 	{
-		return start == a.start && end == a.end;
+		return target == a.target;
 	}
-	Move() :start(Point()), end(Point()) {};
-	operator int() const {
-		return to_densed();
-	};
-	Move (int densed)
-	{
-		char x1, y1, x2, y2;
-		x1 = densed / (BOARD_SIZE * BOARD_SIZE * BOARD_SIZE);
-		y1 = densed / (BOARD_SIZE * BOARD_SIZE) - x1 * BOARD_SIZE;
-		x2 = densed / BOARD_SIZE - x1 * BOARD_SIZE * BOARD_SIZE - y1 * BOARD_SIZE;
-		y2 = densed % BOARD_SIZE;
-		start={ x1,y1 };
-		end = { x2,y2 };
-	}
-	int to_densed()const {
-		return start.x * BOARD_SIZE * BOARD_SIZE * BOARD_SIZE + start.y * BOARD_SIZE * BOARD_SIZE + end.x * BOARD_SIZE + end.y;
-	};
+	
 #ifdef _PRINT
 	void print()
 	{
-		std::cout << "Move from ";
-		start.print();
-		std::cout << " to ";
-		end.print();
+		std::cout << "Place at ";
+		target.print();
 		std::cout << std::endl;
 	}
 #endif // _PRINT
@@ -335,7 +318,8 @@ public:
 	const Point& pick_a_spot()const;
 	void reset() {
 		_data = { Color::empty };
-		coming_chess = {Color::empty};
+		FOR_RANGE(i, COMING_CHESS_NUM)
+			coming_chess[i] = Color::rand_color();
 	};
 	void set_coming_chess(const std::array<Color,COMING_CHESS_NUM>& _coming_chess) {
 		coming_chess = _coming_chess;

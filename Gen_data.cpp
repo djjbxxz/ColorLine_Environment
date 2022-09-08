@@ -86,13 +86,7 @@ void Gen_data::go()
 
 void Gen_data::paint()
 {
-	auto color = Color::rand_color();
-	game_map->set(pattern._move.start, color);
-	game_map->set_all(pattern.lined, color);
-	if (!pattern.another_destination.outofrange() && !myfunc::is_inlist(pattern.another_destination, pattern.path))
-		game_map->set(pattern.another_destination, Color::rand_statu_except(color));
-	for (const auto& point : pattern.other)
-		game_map->set(point, Color::rand_color());
+
 }
 
 #ifdef _PRINT
@@ -109,12 +103,7 @@ bool Gen_data::validate()const
 
 void Board_pattern::set(Lined_chess& _lined)
 {
-	_move = Move(_lined.startpoint, _lined.destination);
-	lined = _lined.points;
-	if (_lined.possible_destinations.size() == 2)
-		for (const auto& point : _lined.possible_destinations)
-			if (point != _move.end)
-				another_destination = point;
+
 }
 
 void Board_pattern::set_path(const std::vector<Point>& _path)
@@ -124,20 +113,7 @@ void Board_pattern::set_path(const std::vector<Point>& _path)
 #ifdef _PRINT
 void Board_pattern::print()const
 {
-	using std::cout;
-	using std::cin;
-	using std::endl;
-	cout << "startpoint: ";
-	_move.start.print();
-	cout << endl << "path: ";
-	for (const auto& point : path)
-		point.print();
-	cout << endl << "endpoint: ";
-	_move.end.print();
-	cout << endl << "lined: ";
-	for (const auto& point : lined)
-		point.print();
-	cout << endl;
+
 }
 #endif // DEBUG
 

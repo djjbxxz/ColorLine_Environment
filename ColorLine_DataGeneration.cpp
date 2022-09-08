@@ -27,9 +27,7 @@ int main(int argc, char* argv[])
 
 	int reward = 0;
 
-	auto game_map = Game_map();
-	auto a = Gen_data(lined_num, fill_ratio, &game_map);
-	a.go();
+	auto game_map = generate_data(lined_num, fill_ratio);
 	game_map.print();
 	int score = 0;
 	int length = 0;
@@ -41,13 +39,12 @@ int main(int argc, char* argv[])
 		move.print();
 
 		reward = Game_rule(game_map, move).rule();
-		if (reward>0)
-			score += reward;
+		score += reward;
 		game_map.print();
 		std::cout << "reward: " << reward << std::endl;
 	} while (reward != -1);
 	std::cout << "score: " << score << std::endl;
-	std::cout << "step: " << length<< std::endl;
+	std::cout << "step: " << length << std::endl;
 
 
 #endif
@@ -65,6 +62,6 @@ int main(int argc, char* argv[])
 
 #endif
 
-	}
+}
 #endif
 

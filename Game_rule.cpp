@@ -12,26 +12,14 @@ std::vector<std::vector<Point>> Game_rule::Scan_all(const Game_map& game_map)
 //call validate in advance
 int Game_rule::rule()
 {
-	_move_act();
-	auto lined = Scan_a_point(move.end, game_map);
-	int score = Addscore_eliminate(lined, true);
-	if (score == 0)
-	{
-		auto lineds = std::vector<std::vector<Point>>();
-		auto _where = lay_coming_chess();
-		if (is_game_end)
-			return -1;
-		for (auto&& point : _where)
-		{
-			auto lined = Scan_a_point(point, game_map);
-			lineds.insert(lineds.end(), lined.begin(), lined.end());
-		}
-		score += Addscore_eliminate(lineds, false);
+	int score = try_move_score();
+	lay_coming_chess();
+	if (is_game_end)
+		return -1;
 
-		game_map.set_coming_chess(get_coming_chess());
-	}
+	game_map.set_coming_chess(get_coming_chess());
 
-	return is_game_end ? -1 : score;
+return is_game_end ? -1 : score;
 }
 
 std::vector<Point> Game_rule::lay_coming_chess()
@@ -83,26 +71,34 @@ std::vector<std::vector<Point>> Game_rule::Scan_a_point(const Point& point, cons
 
 void Game_rule::_move_act()
 {
-	game_map.set(move.end, game_map.get(move.start));
-	game_map.set(move.start, Color::empty);
+	game_map.set(move.target, Color::rand_color());
 }
 
-int Game_rule::Addscore_eliminate(const std::vector<std::vector<Point>>& lineds, bool add_score)
+int Game_rule::Addscore()
 {
 	int instant_reward = 0;
-	for (auto&& lined : lineds)
-	{
-		for (auto&& point : lined)
-		{
-			if (game_map.get(point) != Color::empty)
-			{
-				game_map.set(point, Color::empty);
-				if (add_score)
-					instant_reward += EACH_CHESS_ELEMINATED_REWARD;
-			}
-		}
-	}
+	if (move.target.x < 3)
+		instant_reward += 2;
+	else
+		instant_reward -= 2;
 	return instant_reward;
+}
+
+int Game_rule::try_move_score()
+{
+	bool flag = game_map.get(move.target) == Color::empty;
+	int score = 0;
+	if (flag)
+	{
+		_move_act();
+		score = Addscore();
+	}
+	else
+	{
+		//illegal move
+		score = -2;
+	}
+	return score;
 }
 
 void Game_rule::_scan_along_direction(const Point& point, Direction direction, std::vector<Point>& lined, const Game_map& game_map)
