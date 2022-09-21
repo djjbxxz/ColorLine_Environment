@@ -122,7 +122,7 @@
     <IncludePath>C:\Python\Python36\include;E:\pybind11\include</IncludePath>
     <LibraryPath>C:\Python\Python36\libs;$(LibraryPath)</LibraryPath>
     <TargetExt>.pyd</TargetExt>
-    <TargetName>gen_colorline_data</TargetName>
+    <TargetName>gen_colorline_data_pytorch</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

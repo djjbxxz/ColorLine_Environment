@@ -6,7 +6,7 @@
 namespace py = pybind11;
 using namespace export_bind;
 
-PYBIND11_MODULE(gen_colorline_data, m)
+PYBIND11_MODULE(gen_colorline_data_pytorch, m)
 {
 	m.doc() = "Generate ColorLine data";
 	m.def("get_random_start", &generate_data, "123");
@@ -60,8 +60,8 @@ PYBIND11_MODULE(gen_colorline_data, m)
 			sizeof(int),									/* Size of one scalar */
 			pybind11::format_descriptor<int>::format(),	/* Python struct-style format descriptor */
 			3,												/* Number of dimensions */
-			{ BOARD_SIZE,BOARD_SIZE ,INPUT_CHANNEL_SIZE },						/* Buffer dimensions */
-			{ sizeof(int) * BOARD_SIZE * INPUT_CHANNEL_SIZE,sizeof(int) * INPUT_CHANNEL_SIZE,sizeof(int) }   /* Strides (in bytes) for each index */
+			{ INPUT_CHANNEL_SIZE,BOARD_SIZE,BOARD_SIZE },						/* Buffer dimensions */
+			{ sizeof(int) * BOARD_SIZE * BOARD_SIZE,sizeof(int) * BOARD_SIZE, sizeof(int) }   /* Strides (in bytes) for each index */
 		);
 
 			});

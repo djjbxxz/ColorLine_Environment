@@ -28,7 +28,7 @@ namespace export_bind
 				{
 					for (int j = 0; j < BOARD_SIZE; j++)
 					{
-						value[i][j][(COLOR_NUM-1) + index * COLOR_NUM + color] = 1;
+						value[(COLOR_NUM - 1) + index * COLOR_NUM + color][i][j] = 1;
 					}
 				}
 
@@ -40,11 +40,11 @@ namespace export_bind
 				{
 					int t = (int)game_map[i * BOARD_SIZE + j];
 					if (t)
-						value[i][j][t - 1] = 1;
+						value[t - 1][i][j] = 1;
 				}
 			}
 		}
-		int value[BOARD_SIZE][BOARD_SIZE][INPUT_CHANNEL_SIZE];
+		int value[INPUT_CHANNEL_SIZE][BOARD_SIZE][BOARD_SIZE];
 	};
 
 	Game_map generate_data(int lined_num, float fill_ratio)
@@ -67,7 +67,7 @@ namespace export_bind
 	{
 		return game_statu_9928(game_map);
 	}
-	int rule(Game_map& game_map,int move)
+	int rule(Game_map& game_map, int move)
 	{
 		return Game_rule(game_map, Move(move)).rule();
 	}
