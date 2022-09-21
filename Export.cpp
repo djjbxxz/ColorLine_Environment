@@ -6,7 +6,7 @@
 namespace py = pybind11;
 using namespace export_bind;
 
-PYBIND11_MODULE(gen_colorline_data, m)
+PYBIND11_MODULE(gen_colorline_data_tensorflow, m)
 {
 	m.doc() = "Generate ColorLine data";
 	m.def("get_random_start", &generate_data, "123");
