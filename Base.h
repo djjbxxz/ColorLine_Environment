@@ -9,12 +9,13 @@
 #include <array>
 using myfunc::Random;
 
-constexpr auto COLOR_NUM= 3;
+constexpr auto COLOR_NUM = 4;
 constexpr auto BOARD_SIZE = 5;
-constexpr auto COMING_CHESS_NUM = 1;
+constexpr auto COMING_CHESS_NUM = 2;
 constexpr auto MIN_ELEMINATABLE_NUM = 4;
+constexpr auto INVALID_MOVE_PENALTY = -2;
 constexpr auto EACH_CHESS_ELEMINATED_REWARD = 2;
-constexpr auto CHESS_NUM = BOARD_SIZE*BOARD_SIZE;
+constexpr auto CHESS_NUM = BOARD_SIZE * BOARD_SIZE;
 constexpr auto POTENTIAL_MOVE_NUM = BOARD_SIZE * BOARD_SIZE * BOARD_SIZE * BOARD_SIZE;
 
 class Color {
@@ -35,7 +36,7 @@ public:
 public:
 	_color value;
 	static const std::array<Color, COLOR_NUM> all_color;
-	static const std::array<Color, COLOR_NUM+1> all_statu;
+	static const std::array<Color, COLOR_NUM + 1> all_statu;
 	static const Color empty;
 public:
 	static Color rand_color_except(std::vector<Color>& exclusion);
@@ -54,7 +55,7 @@ public:
 	}
 private:
 	static std::array<Color, COLOR_NUM>all_color_init();
-	static std::array<Color, COLOR_NUM+1>all_statu_init();
+	static std::array<Color, COLOR_NUM + 1>all_statu_init();
 #ifdef _PRINT
 public:
 	int print()const { return (int)value; };
@@ -68,9 +69,11 @@ public:
 	Point(char	_x, char _y) :x(_x), y(_y) {};
 	Point(int	_x, int _y) :x(_x), y(_y) {};
 	Point(char index) {
-		x = index / BOARD_SIZE; y = index % BOARD_SIZE; };
+		x = index / BOARD_SIZE; y = index % BOARD_SIZE;
+	};
 	Point(int index) {
-		x = index / BOARD_SIZE; y = index % BOARD_SIZE; };
+		x = index / BOARD_SIZE; y = index % BOARD_SIZE;
+	};
 	//Point() =delete;
 	Point(const Point& point) {
 		x = point.x; y = point.y;
@@ -189,9 +192,9 @@ public:
 	};
 public:
 	static const std::map < Direction::_direction, Point > direct2point;
-	static const std::array <Direction,8> eight_neighbor;
-	static const std::array <Direction,4> four_neighbor;
-	static const std::array <Direction,4> scan_direction;
+	static const std::array <Direction, 8> eight_neighbor;
+	static const std::array <Direction, 4> four_neighbor;
+	static const std::array <Direction, 4> scan_direction;
 
 };
 
@@ -209,14 +212,14 @@ public:
 	operator int() const {
 		return to_densed();
 	};
-	Move (int densed)
+	Move(int densed)
 	{
 		char x1, y1, x2, y2;
 		x1 = densed / (BOARD_SIZE * BOARD_SIZE * BOARD_SIZE);
 		y1 = densed / (BOARD_SIZE * BOARD_SIZE) - x1 * BOARD_SIZE;
 		x2 = densed / BOARD_SIZE - x1 * BOARD_SIZE * BOARD_SIZE - y1 * BOARD_SIZE;
 		y2 = densed % BOARD_SIZE;
-		start={ x1,y1 };
+		start = { x1,y1 };
 		end = { x2,y2 };
 	}
 	int to_densed()const {
@@ -303,7 +306,7 @@ public:
 	}
 public:
 	std::array<_Statu, CHESS_NUM> _data{};
-	};
+};
 
 class Game_map :public _MAP<Color>
 {
@@ -335,20 +338,21 @@ public:
 	const Point& pick_a_spot()const;
 	void reset() {
 		_data = { Color::empty };
-		coming_chess = {Color::empty};
+		FOR_RANGE(i, COMING_CHESS_NUM)
+			coming_chess[i] = Color::rand_color();
 	};
-	void set_coming_chess(const std::array<Color,COMING_CHESS_NUM>& _coming_chess) {
+	void set_coming_chess(const std::array<Color, COMING_CHESS_NUM>& _coming_chess) {
 		coming_chess = _coming_chess;
 	}
 	Color* get__data_ptr() {
 		return _data.data();
 	};
 public:
-	const static std::array<Point,CHESS_NUM> _empty;
+	const static std::array<Point, CHESS_NUM> _empty;
 private:
 	static std::array<Point, CHESS_NUM> _empty_init();
 public:
-	std::array<Color,COMING_CHESS_NUM> coming_chess;
+	std::array<Color, COMING_CHESS_NUM> coming_chess;
 #ifdef _PRINT
 public:
 	void print()const;

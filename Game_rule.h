@@ -1,6 +1,6 @@
 #pragma once
 #include "Base.h"
-
+#include "legel_mask.h"
 class Game_rule
 {
 public:
@@ -18,6 +18,7 @@ private:
 	std::vector<Point> lay_coming_chess();
 	std::vector<Point> get_empty();
 	std::array<Color, COMING_CHESS_NUM> get_coming_chess();
+	bool is_move_legal();
 private:
 	static void _scan_along_direction(const Point& point, Direction direction, std::vector<Point>&, const Game_map&);
 private:

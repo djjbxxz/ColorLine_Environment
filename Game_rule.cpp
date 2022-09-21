@@ -9,13 +9,18 @@ std::vector<std::vector<Point>> Game_rule::Scan_all(const Game_map& game_map)
 	return lineds;
 }
 
-//call validate in advance
 int Game_rule::rule()
 {
-	_move_act();
-	auto lined = Scan_a_point(move.end, game_map);
-	int score = Addscore_eliminate(lined, true);
-	if (score == 0)
+	int score = 0;
+	if (is_move_legal())
+	{
+		_move_act();
+		auto lined = Scan_a_point(move.end, game_map);
+		score = Addscore_eliminate(lined, true);
+	}
+	else
+		score = INVALID_MOVE_PENALTY;
+	if (score <= 0)
 	{
 		auto lineds = std::vector<std::vector<Point>>();
 		auto _where = lay_coming_chess();
@@ -127,4 +132,10 @@ std::array<Color, COMING_CHESS_NUM> Game_rule::get_coming_chess()
 	FOR_RANGE(i, COMING_CHESS_NUM)
 		coming_chess[i] = Color::rand_color();
 	return coming_chess;
+}
+
+bool Game_rule::is_move_legal()
+{
+	auto mask = Legal_mask(game_map).get_result();
+	return mask[int(move)] == 1;
 }
