@@ -1,6 +1,7 @@
 #pragma once
 #include "Base.h"
 #include "legel_mask.h"
+#define GAME_END_REWARD -1
 class Game_rule
 {
 public:
@@ -10,7 +11,7 @@ public:
 	}
 public:
 	static std::vector<std::vector<Point>> Scan_all(const Game_map& game_map);
-	int rule();
+	int rule(bool check_action_legal = true);
 private:
 	static std::vector<std::vector<Point>> Scan_a_point(const Point& point, const Game_map& game_map);
 	void _move_act();

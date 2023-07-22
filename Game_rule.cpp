@@ -9,34 +9,40 @@ std::vector<std::vector<Point>> Game_rule::Scan_all(const Game_map& game_map)
 	return lineds;
 }
 
-int Game_rule::rule()
+int Game_rule::rule(bool check_action_legal)
 {
 	int score = 0;
-	if (is_move_legal())
+
+	if (check_action_legal && !is_move_legal())
+	{
+		score = INVALID_MOVE_PENALTY;
+	}
+	else
 	{
 		_move_act();
 		auto lined = Scan_a_point(move.end, game_map);
 		score = Addscore_eliminate(lined, true);
 	}
-	else
-		score = INVALID_MOVE_PENALTY;
-	if (score <= 0)
+
+	if (score <= 0)//when action is invalid or no chess is eliminated
 	{
 		auto lineds = std::vector<std::vector<Point>>();
 		auto _where = lay_coming_chess();
 		if (is_game_end)
-			return -1;
+			return GAME_END_REWARD;
 		for (auto&& point : _where)
 		{
 			auto lined = Scan_a_point(point, game_map);
 			lineds.insert(lineds.end(), lined.begin(), lined.end());
 		}
-		score += Addscore_eliminate(lineds, false);
+		Addscore_eliminate(lineds, false);
 
 		game_map.set_coming_chess(get_coming_chess());
 	}
+	else
+		is_game_end = false;
 
-	return is_game_end ? -1 : score;
+	return is_game_end ? GAME_END_REWARD : score;
 }
 
 std::vector<Point> Game_rule::lay_coming_chess()
