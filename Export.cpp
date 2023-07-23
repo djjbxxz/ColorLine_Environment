@@ -21,12 +21,13 @@ PYBIND11_MODULE(gen_colorline_data_pytorch, m)
 			m.get__data_ptr(),								/* Pointer to buffer */
 			sizeof(char),									/* Size of one scalar */
 			pybind11::format_descriptor<char>::format(),	/* Python struct-style format descriptor */
-			2,												/* Number of dimensions */
-			{ BOARD_SIZE,BOARD_SIZE },						/* Buffer dimensions */
-			{ sizeof(char) * BOARD_SIZE, sizeof(char) }   /* Strides (in bytes) for each index */
+			1,												/* Number of dimensions */
+			{ BOARD_SIZE* BOARD_SIZE + COMING_CHESS_NUM },						/* Buffer dimensions */
+			{ sizeof(char) * (BOARD_SIZE * BOARD_SIZE + COMING_CHESS_NUM)}   /* Strides (in bytes) for each index */
 		);
 
-			});
+			}).def_readwrite("board", &Game_map::_data)
+				.def_readwrite("coming_chess", &Game_map::coming_chess);
 
 	pybind11::class_<Moveable_mask>(m, "Moveable_mask", pybind11::buffer_protocol())
 		.def_buffer([](Moveable_mask& m) -> pybind11::buffer_info {

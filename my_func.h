@@ -163,21 +163,21 @@ namespace myfunc
 	}
 
 	//return first element found that meet the condition
-	template <myconcept::IsVectorOrArray Arr, typename FUNC>
-	Arr::value_type& find_first(Arr list, FUNC condition)
-	{
-		for (auto&& item : list)
-			if (condition(item))
-				return item;
-	}
+	//template <myconcept::IsVectorOrArray Arr, typename FUNC>
+	//Arr::value_type& find_first(Arr list, FUNC condition)
+	//{
+	//	for (auto&& item : list)
+	//		if (condition(item))
+	//			return item;
+	//}
 
-	template <myconcept::IsVectorOrArray Arr, typename FUNC>
-	size_t find_first_index(Arr list, FUNC condition)
-	{
-		for(size_t i = 0;i<list.size();i++)
-			if (condition(list[i]))
-				return i;
-	}
+	//template <myconcept::IsVectorOrArray Arr, typename FUNC>
+	//size_t find_first_index(Arr list, FUNC condition)
+	//{
+	//	for(size_t i = 0;i<list.size();i++)
+	//		if (condition(list[i]))
+	//			return i;
+	//}
 
 	class Random;
 
