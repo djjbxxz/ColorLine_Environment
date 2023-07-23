@@ -30,19 +30,19 @@ PYBIND11_MODULE(gen_colorline_data_pytorch, m)
 		//		std::copy_n(new_val.data(), self.v2.size(), self.v2.data());
 		//	});
 
-	pybind11::class_<Game_map>(m, "Game_map", pybind11::buffer_protocol())
-		.def_buffer([](Game_map& m) -> pybind11::buffer_info {
-		return pybind11::buffer_info(
-			m.get__data_ptr(),								/* Pointer to buffer */
-			sizeof(char),									/* Size of one scalar */
-			pybind11::format_descriptor<char>::format(),	/* Python struct-style format descriptor */
-			1,												/* Number of dimensions */
-			{ BOARD_SIZE* BOARD_SIZE + COMING_CHESS_NUM },						/* Buffer dimensions */
-			{ sizeof(char)}   /* Strides (in bytes) for each index */
-		);
+	//pybind11::class_<Game_map>(m, "Game_map", pybind11::buffer_protocol())
+	//	.def_buffer([](Game_map& m) -> pybind11::buffer_info {
+	//	return pybind11::buffer_info(
+	//		m.get__data_ptr(),								/* Pointer to buffer */
+	//		sizeof(char),									/* Size of one scalar */
+	//		pybind11::format_descriptor<char>::format(),	/* Python struct-style format descriptor */
+	//		1,												/* Number of dimensions */
+	//		{ BOARD_SIZE* BOARD_SIZE + COMING_CHESS_NUM },						/* Buffer dimensions */
+	//		{ sizeof(char)}   /* Strides (in bytes) for each index */
+	//	);
 
-			}).def_readwrite("board", &Game_map::_data)
-				.def_readwrite("coming_chess", &Game_map::coming_chess);
+	//		}).def_readwrite("board", &Game_map::_data)
+	//			.def_readwrite("coming_chess", &Game_map::coming_chess);
 
 	pybind11::class_<Moveable_mask>(m, "Moveable_mask", pybind11::buffer_protocol())
 		.def_buffer([](Moveable_mask& m) -> pybind11::buffer_info {
