@@ -83,6 +83,13 @@ std::array<Point, CHESS_NUM> Game_map::_empty_init()
 
 const std::array<Point, CHESS_NUM> Game_map::_empty = Game_map::_empty_init();
 
+bool Game_map::is_all_empty()const {
+	for (auto&& color : _data)
+		if (color != Color::empty)
+			return false;
+	return true;
+}
+
 std::array<Color, COLOR_NUM>Color::all_color_init()
 {
 	std::array<Color, 7> all_color = {

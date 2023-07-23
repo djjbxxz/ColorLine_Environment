@@ -347,6 +347,7 @@ public:
 	Color* get__data_ptr() {
 		return _data.data();
 	};
+	bool is_all_empty()const {};
 public:
 	const static std::array<Point, CHESS_NUM> _empty;
 private:

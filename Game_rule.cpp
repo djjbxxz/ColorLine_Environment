@@ -40,7 +40,14 @@ int Game_rule::rule(bool check_action_legal)
 		game_map.set_coming_chess(get_coming_chess());
 	}
 	else
+	{
 		is_game_end = false;
+		if (game_map.is_all_empty())
+		{
+			lay_coming_chess();
+			game_map.set_coming_chess(get_coming_chess());
+		}
+	}
 
 	return is_game_end ? GAME_END_REWARD : score;
 }
