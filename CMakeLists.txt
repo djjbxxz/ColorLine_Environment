@@ -7,6 +7,6 @@ add_definitions(-D_EXPORT)
 
 AUX_SOURCE_DIRECTORY(. SRC_LIST)
 
-add_subdirectory(pybind11)
+add_subdirectory(extern/pybind11)
 pybind11_add_module(gen_colorline_data ${SRC_LIST})
 #pybind11_add_module(gen_colorline_data main.cpp)
