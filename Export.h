@@ -1,7 +1,8 @@
 #include "gen_data.h"
 #include <iostream>
-
-
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include <pybind11/numpy.h>
 constexpr auto INPUT_CHANNEL_SIZE = (1+COMING_CHESS_NUM)*COLOR_NUM;
 namespace export_bind
 {

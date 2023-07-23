@@ -1,7 +1,5 @@
 #ifdef _EXPORT
 #include "Export.h"
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
 
 namespace py = pybind11;
 using namespace export_bind;
@@ -14,37 +12,40 @@ PYBIND11_MODULE(gen_colorline_data_pytorch, m)
 	m.def("_994_to_9928", &_994_to_9928, "123");
 	m.def("rule", &rule, "123");
 
-	py::class_<Game_map>(m, "Game_map", pybind11::buffer_protocol())
+	py::class_<Game_map, std::shared_ptr<Game_map>>(m, "Game_map", pybind11::buffer_protocol())
 		//.def(py::init<>())
-		.def_readwrite("game_map", &Game_map::_data)
-		.def_readwrite("coming_chess", &Game_map::coming_chess);
-			
-		//.def_property("v1", [](Game_map& self) {
-		//return py::array<char>(self._data.size(), self._data.data());
-		//	}, [](Game_map& self, py::array_t<char> new_val) {
-		//		std::copy_n(new_val.data(), self.v1.size(), self.v1.data());
-		//	})
-		//.def_property("v2", [](Game_map& self) {
-		//		return py::array_t<char>(self.v2.size(), self.v2.data());
-		//	}, [](Game_map& self, py::array_t<char> new_val) {
-		//		std::copy_n(new_val.data(), self.v2.size(), self.v2.data());
-		//	});
+		.def("game_map", [](Game_map& m)->py::array {
+		return py::array(
+			py::buffer_info(
+				m.get__data_ptr(),								/* Pointer to buffer */
+				sizeof(char),									/* Size of one scalar */
+				py::format_descriptor<char>::format(),	/* Python struct-style format descriptor */
+				2,												/* Number of dimensions */
+				{ BOARD_SIZE , BOARD_SIZE },						/* Buffer dimensions */
+				{ sizeof(char)* BOARD_SIZE, sizeof(char) }   /* Strides (in bytes) for each index */
+			));})
+		.def("coming_chess", [](Game_map& m)->py::array {
+				return py::array(
+					py::buffer_info(
+				m.coming_chess.data(),								/* Pointer to buffer */
+				sizeof(char),									/* Size of one scalar */
+				py::format_descriptor<char>::format(),	/* Python struct-style format descriptor */
+				1,												/* Number of dimensions */
+				{ COMING_CHESS_NUM },						/* Buffer dimensions */
+				{ sizeof(char) }   /* Strides (in bytes) for each index */
+			));})
+		.def_buffer([](Game_map& m) -> pybind11::buffer_info {
+				return pybind11::buffer_info(
+				m.get__data_ptr(),								/* Pointer to buffer */
+				sizeof(char),									/* Size of one scalar */
+				pybind11::format_descriptor<char>::format(),	/* Python struct-style format descriptor */
+				1,												/* Number of dimensions */
+				{ BOARD_SIZE * BOARD_SIZE + COMING_CHESS_NUM },						/* Buffer dimensions */
+				{ sizeof(char) }   /* Strides (in bytes) for each index */
+				); })
+		;
 
-	//pybind11::class_<Game_map>(m, "Game_map", pybind11::buffer_protocol())
-	//	.def_buffer([](Game_map& m) -> pybind11::buffer_info {
-	//	return pybind11::buffer_info(
-	//		m.get__data_ptr(),								/* Pointer to buffer */
-	//		sizeof(char),									/* Size of one scalar */
-	//		pybind11::format_descriptor<char>::format(),	/* Python struct-style format descriptor */
-	//		1,												/* Number of dimensions */
-	//		{ BOARD_SIZE* BOARD_SIZE + COMING_CHESS_NUM },						/* Buffer dimensions */
-	//		{ sizeof(char)}   /* Strides (in bytes) for each index */
-	//	);
-
-	//		}).def_readwrite("board", &Game_map::_data)
-	//			.def_readwrite("coming_chess", &Game_map::coming_chess);
-
-	pybind11::class_<Moveable_mask>(m, "Moveable_mask", pybind11::buffer_protocol())
+		pybind11::class_<Moveable_mask>(m, "Moveable_mask", pybind11::buffer_protocol())
 		.def_buffer([](Moveable_mask& m) -> pybind11::buffer_info {
 		return pybind11::buffer_info(
 			m.data(),								/* Pointer to buffer */
@@ -53,7 +54,7 @@ PYBIND11_MODULE(gen_colorline_data_pytorch, m)
 			1,												/* Number of dimensions */
 			{ POTENTIAL_MOVE_NUM },						/* Buffer dimensions */
 			{ sizeof(int) }   /* Strides (in bytes) for each index */
-		);
+	);
 			});
 
 	//pybind11::class_<Color>(m, "Color", pybind11::buffer_protocol())
@@ -78,7 +79,7 @@ PYBIND11_MODULE(gen_colorline_data_pytorch, m)
 			3,												/* Number of dimensions */
 			{ INPUT_CHANNEL_SIZE,BOARD_SIZE,BOARD_SIZE },						/* Buffer dimensions */
 			{ sizeof(int) * BOARD_SIZE * BOARD_SIZE,sizeof(int) * BOARD_SIZE, sizeof(int) }   /* Strides (in bytes) for each index */
-		);
+	);
 
 			});
 
