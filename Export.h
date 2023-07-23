@@ -67,8 +67,8 @@ namespace export_bind
 	{
 		return game_statu_9928(game_map);
 	}
-	int rule(Game_map& game_map, int move)
+	int rule(Game_map& game_map, int move, bool check_action_legal=true)
 	{
-		return Game_rule(game_map, Move(move)).rule();
+		return Game_rule(game_map, Move(move)).rule(check_action_legal);
 	}
 }
