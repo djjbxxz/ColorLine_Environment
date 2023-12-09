@@ -119,8 +119,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='export_pybind|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Python\Python36\include;E:\pybind11\include</IncludePath>
-    <LibraryPath>C:\Python\Python36\libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\include;D:\repo\ColorLine_Environment\extern\pybind11\include\;C:\Python\Python36\include;E:\pybind11\include</IncludePath>
+    <LibraryPath>D:\miniconda3\pkgs\python-3.6.13-h3758d61_0\libs;C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\libs;C:\Python\Python36\libs;$(LibraryPath)</LibraryPath>
     <TargetExt>.pyd</TargetExt>
     <TargetName>gen_colorline_data_tensorflow</TargetName>
   </PropertyGroup>
@@ -211,7 +211,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;_PRINT;_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -239,6 +239,7 @@
     <ClInclude Include="Game_rule.h" />
     <ClInclude Include="gen_data.h" />
     <ClInclude Include="legel_mask.h" />
+    <ClInclude Include="macroCheck.h" />
     <ClInclude Include="my_func.h" />
   </ItemGroup>
   <ItemGroup>

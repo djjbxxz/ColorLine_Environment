@@ -15,7 +15,7 @@ The game ends when there is no space on the board for a new piece, or when no pi
 
 
 ## Game configuration
-The following parameters ard configurable in [`Base.h`](Base.h) 
+The following parameters ard configurable in [`Base.h`](Base.h)
 
 | Configurable params          | Default        | Description |
 | -----------------------------|----------------|------------------|
@@ -27,9 +27,10 @@ The following parameters ard configurable in [`Base.h`](Base.h)
 
 
 ## Compilation
-C++20 standard required
+C++14 standard required
 
-For Linux, g++ version >=10 
+For Linux, g++ version >=5 
+**[C++ standrad and gcc version] (https://gcc.gnu.org/projects/cxx-status.html#cxx14)**
 
 For Windows, use latest MSVC
 
@@ -41,6 +42,7 @@ cmake ..
 make
 ```
 
+##Misc
 This is a submodule, and is designed for **[this](https://github.com/djjbxxz/sac-discrete-tf-colorline)** project.
 
 Please make sure the game configuration in this submodule is the same as the one in **[here](https://github.com/djjbxxz/sac-discrete-tf-colorline)**.
