@@ -46,7 +46,7 @@ private:
 private:
 	Point startpoint;
 	Point endpoint;
-	GRID_STATU game_map[BOARD_SIZE][BOARD_SIZE]{ GRID_STATU::NERVER_VISIT };
+	GRID_STATU game_map[BOARD_SIZE][BOARD_SIZE] = { { GRID_STATU::NERVER_VISIT } };
 	std::vector<Path_tree_Node*> openlist;
 	std::vector<Path_tree_Node> all_points;
 };
