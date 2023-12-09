@@ -7,16 +7,27 @@
 #include <iostream>
 #endif // _PRINT
 #include <array>
+#include "macroCheck.h"
 using myfunc::Random;
 
-constexpr auto COLOR_NUM = 4;
-constexpr auto BOARD_SIZE = 5;
-constexpr auto COMING_CHESS_NUM = 2;
-constexpr auto MIN_ELEMINATABLE_NUM = 4;
-constexpr auto INVALID_MOVE_PENALTY = -2;
-constexpr auto EACH_CHESS_ELEMINATED_REWARD = 2;
-constexpr auto CHESS_NUM = BOARD_SIZE * BOARD_SIZE;
-constexpr auto POTENTIAL_MOVE_NUM = BOARD_SIZE * BOARD_SIZE * BOARD_SIZE * BOARD_SIZE;
+#define COLOR_NUM 4
+#define BOARD_SIZE 5
+#define COMING_CHESS_NUM 2
+#define MIN_ELEMINATABLE_NUM 4
+#define INVALID_MOVE_PENALTY -2
+#define EACH_CHESS_ELEMINATED_REWARD 2
+#define CHESS_NUM (BOARD_SIZE * BOARD_SIZE)
+#define POTENTIAL_MOVE_NUM (BOARD_SIZE * BOARD_SIZE * BOARD_SIZE * BOARD_SIZE)
+#pragma message(PRINT_MACRO_NAME_VALUE(COLOR_NUM))
+#pragma message(PRINT_MACRO_NAME_VALUE(BOARD_SIZE))
+#pragma message(PRINT_MACRO_NAME_VALUE(COMING_CHESS_NUM))
+#pragma message(PRINT_MACRO_NAME_VALUE(MIN_ELEMINATABLE_NUM))
+#pragma message(PRINT_MACRO_NAME_VALUE(INVALID_MOVE_PENALTY))
+#pragma message(PRINT_MACRO_NAME_VALUE(EACH_CHESS_ELEMINATED_REWARD))
+#pragma message(PRINT_MACRO_NAME_VALUE(CHESS_NUM))
+#pragma message(PRINT_MACRO_NAME_VALUE(POTENTIAL_MOVE_NUM))
+
+
 
 class Color {
 	enum class _color :char

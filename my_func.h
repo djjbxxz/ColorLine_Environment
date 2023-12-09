@@ -2,8 +2,6 @@
 
 #include <vector>
 #include <random>
-#include <concepts>
-#include <type_traits>
 #include<array>
 #ifdef _DEBUG
 #include <assert.h>
@@ -11,67 +9,10 @@
 
 #define FOR_RANGE(PLACEHOLDER,NUM) for(int PLACEHOLDER=0;PLACEHOLDER<NUM;PLACEHOLDER++)
 
-namespace mytrait
-{
-	template <typename T>
-	struct is_std_array : std::false_type {};
-
-	template < typename T, std::size_t N>
-	struct is_std_array<std::array<T, N> > : std::true_type { };
-
-	template <typename T>
-	struct is_std_vector : std::false_type {};
-
-	template < typename T>
-	struct is_std_vector<std::vector<T> > : std::true_type { };
-
-}
-
-namespace myconcept
-{
-	template<typename T>
-	concept IsVectorOrArray = mytrait::is_std_array<T>::value || mytrait::is_std_vector<T>::value;
-
-	template<typename T>
-	concept NoVectorBool = requires(T vec)
-	{
-		mytrait::is_std_vector<T>::value && !std::same_as<typename T::value_type, bool>;
-	};
-}
 
 namespace myfunc
 {
-	//template <myconcept::IsVectorOrArray ITEM, myconcept::IsVectorOrArray EXCLUSION>
-	//std::vector<typename ITEM::iterator>
-	//	exclude(ITEM& items, const EXCLUSION& exclusion)
-	//{
-	//	std::vector<ITEM::const_iterator> ptr_items;
-	//	std::vector<EXCLUSION::const_iterator> ptr_exclusion;
-	//	ptr_items.reserve(items.size());
-	//	ptr_exclusion.reserve(exclusion.size());
-	//	for (auto i = items.begin(); i != items.end(); i++)
-	//		ptr_items.emplace_back(i);
-	//	for (auto i = exclusion.begin(); i != exclusion.end(); i++)
-	//		ptr_exclusion.emplace_back(i);
-	//	while (true)
-	//	{
-	//		auto i = ptr_exclusion.begin();
-	//		for (auto j = ptr_items.begin(); j != ptr_items.end();)
-	//			if (**i == **j)
-	//			{
-	//				i = ptr_exclusion.erase(i);
-	//				j = ptr_items.erase(j);
-	//				break;
-	//			}
-	//			else
-	//				j++;
-	//		if (ptr_exclusion.empty())
-	//			break;
-	//	}
-	//	return ptr_items;
-	//}
-
-	template <myconcept::IsVectorOrArray ITEM, myconcept::IsVectorOrArray EXCLUSION>
+	template <typename ITEM, typename EXCLUSION>
 	std::vector<typename ITEM::const_iterator>
 		exclude(const ITEM& items, const EXCLUSION& exclusion)
 	{
@@ -101,7 +42,7 @@ namespace myfunc
 		return ptr_items;
 	}
 
-	template <myconcept::IsVectorOrArray Arr>
+	template <typename Arr>
 	bool is_unique(const Arr& items)
 	{
 		for (auto i = items.begin(); i != items.end(); i++)
@@ -111,8 +52,7 @@ namespace myfunc
 		return true;
 	}
 
-	template <typename T, myconcept::IsVectorOrArray Arr>
-		requires(std::same_as<typename Arr::value_type, T>)
+	template <typename T, typename Arr>
 	bool is_inlist(const T& a, const Arr& list)
 	{
 		for (const auto& item : list)
@@ -121,7 +61,7 @@ namespace myfunc
 		return false;
 	}
 
-	template <myconcept::IsVectorOrArray A, myconcept::IsVectorOrArray B>
+	template <typename A, typename B>
 	bool operator==(const A& a, const B& b)
 	{
 		if (a.size() != b.size())
@@ -148,7 +88,6 @@ namespace myfunc
 
 	//remove only once if repeat
 	template <typename T, typename FUNC, typename Arr>
-		requires(mytrait::is_std_vector<Arr>::value&& std::same_as<typename Arr::value_type, T>)
 	bool remove(const T& item, Arr& list, FUNC condition)
 	{
 		for (auto i = list.begin(); i != list.end();)
@@ -162,30 +101,12 @@ namespace myfunc
 		return false;
 	}
 
-	//return first element found that meet the condition
-	//template <myconcept::IsVectorOrArray Arr, typename FUNC>
-	//Arr::value_type& find_first(Arr list, FUNC condition)
-	//{
-	//	for (auto&& item : list)
-	//		if (condition(item))
-	//			return item;
-	//}
-
-	//template <myconcept::IsVectorOrArray Arr, typename FUNC>
-	//size_t find_first_index(Arr list, FUNC condition)
-	//{
-	//	for(size_t i = 0;i<list.size();i++)
-	//		if (condition(list[i]))
-	//			return i;
-	//}
-
 	class Random;
 
 	template<typename T>
-		requires (mytrait::is_std_array<T>::value)
 	std::vector<typename T::value_type>from_std_array(const T& arr)
 	{
-		return std::vector(arr.begin(), arr.end());
+		return std::vector<typename T::value_type>(arr.begin(), arr.end());
 	}
 };
 
@@ -195,9 +116,8 @@ public:
 
 	Random() = delete;
 
-	template <myconcept::IsVectorOrArray Arr>
-		requires myconcept::NoVectorBool<Arr>
-	static Arr::value_type& rand_choice(Arr& items)
+	template <typename Arr>
+	static typename Arr::value_type& rand_choice(Arr& items)
 	{
 #ifdef _DEBUG
 		assert(!items.empty());
@@ -207,9 +127,8 @@ public:
 		return items[dist(mt)];
 	}
 
-	template <myconcept::IsVectorOrArray Arr>
-		requires myconcept::NoVectorBool<Arr>
-	static const Arr::value_type& rand_choice(const Arr& items)
+	template <typename Arr>
+	static const typename Arr::value_type& rand_choice(const Arr& items)
 	{
 #ifdef _DEBUG
 		assert(!items.empty());
