@@ -2,13 +2,31 @@
 #include "Export.h"
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <sstream>
+#include <string>
+#include <iostream>
 
 namespace py = pybind11;
 using namespace export_bind;
 
 PYBIND11_MODULE(gen_colorline_data_tensorflow, m)
 {
-	m.doc() = "Generate ColorLine data";
+	std::ostringstream oss;
+	oss << std::endl << "***********Configuration***********" << std::endl << std::endl;
+	oss << "COLOR_NUM: " << COLOR_NUM << std::endl;
+	oss << "BOARD_SIZE: " << BOARD_SIZE << std::endl;
+	oss << "COMING_CHESS_NUM: " << COMING_CHESS_NUM << std::endl;
+	oss << "MIN_ELEMINATABLE_NUM: " << MIN_ELEMINATABLE_NUM << std::endl;
+	oss << "INVALID_MOVE_PENALTY: " << INVALID_MOVE_PENALTY << std::endl;
+	oss << "EACH_CHESS_ELEMINATED_REWARD: " << EACH_CHESS_ELEMINATED_REWARD << std::endl;
+	oss << std::endl << "Compiled for Tensorflow" << " | Python version : " << PYVERSION << std::endl;
+
+	oss << std::endl << "***********Configuration***********" << std::endl << std::endl;
+
+	std::string str = oss.str();
+	m.doc() = str;
+	//std::cout << str << std::endl;
+
 	m.def("get_random_start", &generate_data, "123");
 	m.def("get_valid_mask", &get_valid_mask, "123");
 	m.def("_994_to_9928", &_994_to_9928, "123");
@@ -24,7 +42,7 @@ PYBIND11_MODULE(gen_colorline_data_tensorflow, m)
 			2,												/* Number of dimensions */
 			{ BOARD_SIZE,BOARD_SIZE },						/* Buffer dimensions */
 			{ sizeof(char) * BOARD_SIZE, sizeof(char) }   /* Strides (in bytes) for each index */
-		);
+	);
 
 			});
 
@@ -37,7 +55,7 @@ PYBIND11_MODULE(gen_colorline_data_tensorflow, m)
 			1,												/* Number of dimensions */
 			{ POTENTIAL_MOVE_NUM },						/* Buffer dimensions */
 			{ sizeof(int) }   /* Strides (in bytes) for each index */
-		);
+	);
 			});
 
 	pybind11::class_<Color>(m, "Color", pybind11::buffer_protocol())
@@ -49,7 +67,7 @@ PYBIND11_MODULE(gen_colorline_data_tensorflow, m)
 			1,												/* Number of dimensions */
 			{ 1 },						/* Buffer dimensions */
 			{ sizeof(char) }   /* Strides (in bytes) for each index */
-		);
+	);
 
 			});
 
@@ -62,7 +80,7 @@ PYBIND11_MODULE(gen_colorline_data_tensorflow, m)
 			3,												/* Number of dimensions */
 			{ BOARD_SIZE,BOARD_SIZE ,INPUT_CHANNEL_SIZE },						/* Buffer dimensions */
 			{ sizeof(int) * BOARD_SIZE * INPUT_CHANNEL_SIZE,sizeof(int) * INPUT_CHANNEL_SIZE,sizeof(int) }   /* Strides (in bytes) for each index */
-		);
+	);
 
 			});
 

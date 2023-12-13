@@ -10,6 +10,7 @@
 #include "macroCheck.h"
 using myfunc::Random;
 
+//Game configuration
 #define COLOR_NUM 4
 #define BOARD_SIZE 5
 #define COMING_CHESS_NUM 2
@@ -18,6 +19,10 @@ using myfunc::Random;
 #define EACH_CHESS_ELEMINATED_REWARD 2
 #define CHESS_NUM (BOARD_SIZE * BOARD_SIZE)
 #define POTENTIAL_MOVE_NUM (BOARD_SIZE * BOARD_SIZE * BOARD_SIZE * BOARD_SIZE)
+
+#define PYVERSION "UNKOWN"
+
+// Print on compile time
 #pragma message(PRINT_MACRO_NAME_VALUE(COLOR_NUM))
 #pragma message(PRINT_MACRO_NAME_VALUE(BOARD_SIZE))
 #pragma message(PRINT_MACRO_NAME_VALUE(COMING_CHESS_NUM))
