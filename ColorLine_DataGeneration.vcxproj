@@ -235,6 +235,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base.h" />
+    <ClInclude Include="CompileTimeMsg.h" />
     <ClInclude Include="Export.h" />
     <ClInclude Include="Game_rule.h" />
     <ClInclude Include="gen_data.h" />

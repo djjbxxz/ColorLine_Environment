@@ -5,6 +5,7 @@
 #include <sstream>
 #include <string>
 #include <iostream>
+#include "CompileTimeMsg.h"
 
 namespace py = pybind11;
 using namespace export_bind;
@@ -19,7 +20,8 @@ PYBIND11_MODULE(gen_colorline_data_tensorflow, m)
 	oss << "MIN_ELEMINATABLE_NUM: " << MIN_ELEMINATABLE_NUM << std::endl;
 	oss << "INVALID_MOVE_PENALTY: " << INVALID_MOVE_PENALTY << std::endl;
 	oss << "EACH_CHESS_ELEMINATED_REWARD: " << EACH_CHESS_ELEMINATED_REWARD << std::endl;
-	oss << std::endl << "Compiled for Tensorflow" << " | Python version : " << PYVERSION << std::endl;
+	oss << std::endl << "Compiled for Tensorflow" << " | Python version : " << PYVERSION \
+		<< " | System : " << SYSTEM_NAME << " " << SYSTEM_VERSION << std::endl;
 
 	oss << std::endl << "***********Configuration***********" << std::endl << std::endl;
 
