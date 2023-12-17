@@ -88,7 +88,7 @@ void Gen_data::paint()
 {
 	auto color = Color::rand_color();
 	game_map->set(pattern._move.start, color);
-	game_map->set_all(pattern.lined, color);
+	game_map->set_points(pattern.lined, color);
 	if (!pattern.another_destination.outofrange() && !myfunc::is_inlist(pattern.another_destination, pattern.path))
 		game_map->set(pattern.another_destination, Color::rand_statu_except(color));
 	for (const auto& point : pattern.other)

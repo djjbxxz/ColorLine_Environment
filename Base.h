@@ -37,6 +37,7 @@ class Color {
 public:
 	Color(_color _value) :value(_value) {};
 	Color() :value(_color::empty) {};
+	Color(char _value):value(_color(_value)) {};
 public:
 	_color value;
 	static const std::array<Color, COLOR_NUM> all_color;
@@ -259,10 +260,15 @@ public:
 #endif // _DEBUG
 		_data[index] = _statu;
 	};
-	void set_all(const std::vector<Point>& points, const _Statu& _statu)
+	void set_points(const std::vector<Point>& points, const _Statu& _statu)
 	{
 		for (auto&& point : points)
 			set(point, _statu);
+	}
+	void set_all(const _Statu& _statu)
+	{
+		for (auto&& statu : _data)
+			statu = _statu;
 	}
 	_Statu get(const Point& point)const
 	{
@@ -271,7 +277,7 @@ public:
 #endif // _DEBUG
 		return _data[point.index()];
 	}
-	void reset(int num, _Statu value)
+	void reset()
 	{
 		_data = {};
 	};
@@ -293,7 +299,7 @@ public:
 	{
 		std::vector<Point>result;
 		_MAP<bool> bool_map;
-		bool_map.reset(BOARD_SIZE * BOARD_SIZE, false);
+		bool_map.reset();
 		for (auto&& point : points)
 			bool_map.set(point, true);
 		for (auto&& point : points)
@@ -307,6 +313,24 @@ public:
 			}
 		}
 		return result;
+	}
+
+	_Statu& operator[](int index)
+	{
+		return _data[index];
+	}
+
+	const _Statu& operator[](int index)const
+	{
+		return _data[index];
+	}
+	_Statu& operator[](const Point& point)
+	{
+		return _data[point.index()];
+	}
+	const _Statu& operator[](const Point& point)const
+	{
+		return _data[point.index()];
 	}
 public:
 	std::array<_Statu, CHESS_NUM> _data{};
@@ -329,14 +353,11 @@ public:
 		_data = std::move(g._data);
 		coming_chess = std::move(g.coming_chess);
 	};
-	Color& operator[](int index)
+	Game_map(int _map[])
 	{
-		return _data[index];
-	}
-	const Color& operator[](int index)const
-	{
-		return _data[index];
-	}
+		FOR_RANGE(i, CHESS_NUM)
+			_data[i] = _map[i];
+	};
 public:
 	const Point& pick_a_spot(const std::vector<Point>& exclusion)const;
 	const Point& pick_a_spot()const;

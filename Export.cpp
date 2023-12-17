@@ -1,11 +1,5 @@
 #ifdef _EXPORT
 #include "Export.h"
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-#include <sstream>
-#include <string>
-#include <iostream>
-#include "CompileTimeMsg.h"
 
 namespace py = pybind11;
 using namespace export_bind;
@@ -29,10 +23,11 @@ PYBIND11_MODULE(gen_colorline_data_tensorflow, m)
 	m.doc() = str;
 	//std::cout << str << std::endl;
 
-	m.def("get_random_start", &generate_data, "123");
-	m.def("get_valid_mask", &get_valid_mask, "123");
-	m.def("_994_to_9928", &_994_to_9928, "123");
-	m.def("rule", &rule, "123");
+	m.def("get_random_start", &generate_data);
+	m.def("get_valid_mask", &get_valid_mask);
+	m.def("_994_to_9928", &_994_to_9928);
+	m.def("rule", &rule);
+	m.def("get_path", &get_path);
 
 
 	pybind11::class_<Game_map>(m, "Game_map", pybind11::buffer_protocol())
@@ -85,6 +80,11 @@ PYBIND11_MODULE(gen_colorline_data_tensorflow, m)
 	);
 
 			});
+
+	pybind11::class_<Point_int>(m, "Point")
+		.def(pybind11::init<int, int>())
+		.def_readwrite("x", &Point_int::x)
+		.def_readwrite("y", &Point_int::y);
 
 }
 #endif // _EXPORT
