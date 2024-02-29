@@ -101,8 +101,65 @@ namespace myfunc
 		return false;
 	}
 
-	class Random;
 
+	class Random
+	{
+	public:
+
+		Random() = delete;
+
+		template <typename Arr>
+		static typename Arr::value_type& rand_choice(Arr& items)
+		{
+#ifdef _DEBUG
+			assert(!items.empty());
+#endif // DEBUG
+
+			std::uniform_int_distribution<int> dist(0, items.size() - 1);
+			return items[dist(mt)];
+		}
+
+		template <typename Arr>
+		static const typename Arr::value_type& rand_choice(const Arr& items)
+		{
+#ifdef _DEBUG
+			assert(!items.empty());
+#endif // DEBUG
+
+			std::uniform_int_distribution<int> dist(0, items.size() - 1);
+			return items[dist(mt)];
+		}
+
+
+		static int randint(int max)
+		{//return [0,max) integer
+#ifdef _DEBUG
+			assert(max > 0 && max <= INT32_MAX);
+#endif
+			if (max == 0)
+				throw "function: randint arg[0] can not be zero!";
+			return (_random(mt)) % max;
+		}
+		static void seed(int s)
+		{
+			mt.seed(s);
+		}
+	private:
+		static std::mt19937 mt;
+		static std::uniform_int_distribution<int> _random;
+	};
+
+	namespace {
+		class SeedInitializer {
+		public:
+			SeedInitializer() {
+				std::random_device rd;
+				Random::seed(rd());
+			}
+		};
+		static SeedInitializer seedInitializer;
+
+	}
 	template<typename T>
 	std::vector<typename T::value_type>from_std_array(const T& arr)
 	{
@@ -110,46 +167,3 @@ namespace myfunc
 	}
 };
 
-class myfunc::Random
-{
-public:
-
-	Random() = delete;
-
-	template <typename Arr>
-	static typename Arr::value_type& rand_choice(Arr& items)
-	{
-#ifdef _DEBUG
-		assert(!items.empty());
-#endif // DEBUG
-
-		std::uniform_int_distribution<int> dist(0, items.size() - 1);
-		return items[dist(mt)];
-	}
-
-	template <typename Arr>
-	static const typename Arr::value_type& rand_choice(const Arr& items)
-	{
-#ifdef _DEBUG
-		assert(!items.empty());
-#endif // DEBUG
-
-		std::uniform_int_distribution<int> dist(0, items.size() - 1);
-		return items[dist(mt)];
-	}
-
-
-	static int randint(int max)
-	{//return [0,max) integer
-#ifdef _DEBUG
-		assert(max > 0 && max <= INT32_MAX);
-#endif
-		if (max == 0)
-			throw "function: randint arg[0] can not be zero!";
-		return (_random(mt)) % max;
-	}
-
-private:
-	static std::mt19937 mt;
-	static std::uniform_int_distribution<int> _random;
-};

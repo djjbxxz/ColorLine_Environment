@@ -28,6 +28,7 @@ PYBIND11_MODULE(gen_colorline_data_tensorflow, m)
 	m.def("_994_to_9928", &_994_to_9928);
 	m.def("rule", &rule);
 	m.def("get_path", &get_path);
+	m.def("seed", &seed);
 
 
 	pybind11::class_<Game_map>(m, "Game_map", pybind11::buffer_protocol())

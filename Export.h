@@ -100,4 +100,9 @@ namespace export_bind
 		auto path = Pathfinding::A_star{ start, end,{ data } }.get_path();
 		return std::vector<Point_int>(path.begin(), path.end());
 	}
+
+	void seed(int seed)
+	{
+		Random::seed(seed);
+	}
 }
